@@ -3,17 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "concurrently \"npm run launch\" \"npm run compiler\"",
-    "launch": "live-server .",
-    "compiler": "stylus ./css --use nib --include-css --hoist-atrules --compress --watch"
+    "start": "live-server",
+    "compile": "stylus stylus/index.styl -o css/main.css --use nib --include-css --compress",
+    "watch": "stylus stylus/index.styl -o css/main.css --use nib --include-css --compress --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/melquip/droom.git"
   },
   "author": "Melquisedeque Pereira",
-  "devDependencies": {
-    "concurrently": "^4.1.2",
+  "dependencies": {
     "live-server": "^1.2.1",
     "nib": "^1.1.2",
     "stylus": "^0.54.7"
