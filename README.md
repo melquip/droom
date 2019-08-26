@@ -1,7 +1,7 @@
-# droom.github.io
+# melquip.github.io/droom/
 
-- If you want to continue development:
-- First `npm install` for dev-dependencies
-- Use `npm start` to launch and watch all files for changes.
-- Use `npm launch` to launch and watch html files.
-- Use `npm compiler` to compile and watch all stylesheets.
+- For developers:
+- Run `npm install`.
+- Run `npm start` to launch, compile and watch all files for changes.
+- Run `npm launch` to just launch live-server.
+- Run `npm compiler` to just compile/watch all stylesheets.
