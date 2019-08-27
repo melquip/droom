@@ -41,15 +41,15 @@ header, main, footer
 body 
 	padding-top 70px
 	
+.logo img
+	height 40px
+
 header 
 	z-index 100
 	size 100% 70px
 	fixed top 0 left 0
 	background-color $white
 
-	img
-		height 40px
-		
 	.flex
 		.column
 			&:first-child
@@ -137,8 +137,42 @@ nav
 	padding top 200px bottom 70px
 	background $blue-dark
 
+.feature1
+	padding 70px 0
 .reviews
 	padding 70px 0
+	.flex > .column
+		position relative
+		flexible(three, 30px)
+		background-color $gray
+		padding top 30px bottom 30px right 30px left 40px
+		&:before 
+			content ''
+			size 10px 100%
+			absolute top 0 left 0
+			background-color $pink
+
+	blockquote
+		position relative
+		padding 42px 50px
+		f 24px, 1.16em, 'bold' $blue-dark center
+		&:before, &:after 
+			f 48px, 1em, $blue-dark
+			position absolute
+		&:before
+			content '“'
+			top 0 
+			left 0
+		&:after
+			content '”'
+			bottom 0
+			right 0
+			line-height 0
+	span
+		display block
+		padding-top 20px
+		margin-bottom -5px
+		f 14px, 1em, .1em $blue-dark right
 
 .asTitle
 	position relative
@@ -168,7 +202,8 @@ nav
 		margin-top 15px
 
 footer
-	height 100px 
+	height 70px
+	padding 15px 0
 	background-color $blue-light
 
 apply_media_cache()
