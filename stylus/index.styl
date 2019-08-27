@@ -11,6 +11,9 @@
 
 custom-reset()
 
+b, strong
+	f 'bold'
+
 @keyframes loading
 	0%
 		opacity 1
@@ -94,20 +97,41 @@ header
 			bottom -6px
 
 .intro 
+	z-index 2
 	background linear-gradient(180deg, rgba($blue-light,1) 0%, rgba($blue-dark,1) 100%)
 	.inner
 		min-height calc(100vh - 70px)
+		text-align center
 	h1
 		padding-top 2.6em
-		f 54px, 1.2em, .1em $white italic center
+		f 54px, 1.4em, .1em $white
+	.button
+		margin 30px auto 0
+		
+
+.button
+	display inline-block
+	background-color $white
+	padding .55em 1.11em .33em
+	f 18px, 2em, $blue-dark uppercase center 'bold'
+	transition all .2s ease-in-out
+	&:hover
+		color $white
+		background-color $blue-dark
+		box-shadow 0 0 10px rgba($black, .3)
+.droom
+	f 200px, .8em, 'regular2' $white .5em 
+	absolute bottom 100px left 50%
+	transform translateX(calc(-50% + .25em))
 
 .features
 	background $blue-dark
 	.inner
 		min-height 50vh
 
+
 footer
-	height 100px
+	height 100px 
 	background-color $blue-light
 
 apply_media_cache()
