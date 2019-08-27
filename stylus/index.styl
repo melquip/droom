@@ -31,15 +31,70 @@ custom-reset()
 	img
 		absolute top 50% left 50%
 		transform translate(-50%, -50%)
-		
-header 
-	.flex
-		.column:last-child
-			text-align right
+
+header, main, footer 
+	max-width 1920px
+	margin 0 auto
+body 
+	padding-top 70px
 	
-main
-	background-color lightgrey
+header 
+	z-index 100
+	size 100% 70px
+	fixed top 0 left 0
+	background-color $white
+
+	img
+		height 40px
+		
+	.flex
+		.column
+			&:first-child
+				padding top 15px bottom 15px	
+			&:last-child
+				display flex
+				justify-content flex-end
+
+	.login, .hamburger
+		size 70px
+
+	.login
+		display block
+		background-color $blue-dark
+	.hamburger
+		padding 0
+		background-color $blue-light
+		transition all .33s ease-in-out
+		&.is-active
+			background-color $gray
+			.hamburger-inner
+				&, &:after, &:before
+					background-color $white
+	.hamburger-box
+		size 20px 14px
+	.hamburger-inner
+		margin-top 0
+		&, &:after, &:before
+			size 20px 2px
+			border-radius 0
+			background-color $white
+		&:before
+			top -6px
+		&:after
+			bottom -6px
+
+.intro 
+	background linear-gradient(180deg, rgba($blue-light,1) 0%, rgba($blue-dark,1) 100%)
+	.inner
+		min-height calc(100vh - 70px)
+
+.features
+	background $blue-dark
+	.inner
+		min-height 50vh
+
 footer
-	background-color grey
+	height 100px
+	background-color $blue-light
 
 apply_media_cache()

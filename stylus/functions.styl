@@ -180,7 +180,7 @@ vendor-prefixes ?= webkit moz o ms official
  * Vendor "display: flex" support with fallback to obsolete versions.
  */
 
-flex-version = flex
+flex-version = flex nobox
 /* box */
 
 //
@@ -188,6 +188,8 @@ flex-version = flex
 //    - http://www.w3.org/TR/css3-flexbox/#flex-containers
 //
 display(type, args...)
+	display type args
+	/*
 	if flex == type or inline-flex == type
 		if box in flex-version
 			if flex == type
@@ -200,7 +202,7 @@ display(type, args...)
 			display: vendor-value(arguments, only: webkit official) // overwrites old webkit
 	else
 		display: arguments
-
+	*/
 /*
  * New syntax for browsers like Google Chrome.
  * Plus a translation to the old syntax, if possible.
@@ -1947,11 +1949,13 @@ $query_aliases = {
 
 containers($first, $options, $center = false)
 	if $center
-		display block unless @display
+		//display block unless @display
 		margin 0 auto unless @margin
 		position relative unless @position
 		z-index 1 unless @z-index
 	max-width defaultUnit($first) unless @max-width or $first is null
+	&.flex
+		display flex
 	for $pair in $options
 		$pair0 = defaultUnit($pair[0])
 		$pair1 = defaultUnit($pair[1])
