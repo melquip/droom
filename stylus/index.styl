@@ -96,18 +96,26 @@ header
 		&:after
 			bottom -6px
 
+nav 
+	display none
+
 .intro 
 	z-index 2
 	background linear-gradient(180deg, rgba($blue-light,1) 0%, rgba($blue-dark,1) 100%)
 	.inner
 		min-height calc(100vh - 70px)
-		text-align center
 	h1
+		max-width 80%
 		padding-top 2.6em
-		f 54px, 1.4em, .1em $white
+		f 54px, 1.4em, .1em $white 'bold'
+		strong
+			f 'regular2'
+	p
+		max-width 400px
+		margin-top 25px
+		f 16px, 1.5em, $white
 	.button
 		margin 30px auto 0
-		
 
 .button
 	display inline-block
@@ -119,16 +127,45 @@ header
 		color $white
 		background-color $blue-dark
 		box-shadow 0 0 10px rgba($black, .3)
+
 .droom
-	f 200px, .8em, 'regular2' $white .5em 
-	absolute bottom 100px left 50%
-	transform translateX(calc(-50% + .25em))
+	width 100%
+	absolute bottom 100px right 0
+	f 200px, .8em, 'regular2' $white 0.5em center
 
 .features
+	padding top 200px bottom 70px
 	background $blue-dark
-	.inner
-		min-height 50vh
 
+.reviews
+	padding 70px 0
+
+.asTitle
+	position relative
+	padding top 39px left 60px
+	margin-bottom 30px
+	f 36px, 1.25em, 'bold' $white
+	&.dark
+		color $blue-dark
+	&:before
+		content ''
+		size 30px 75px
+		absolute top 0 left 0
+		background-color $blue-light
+		
+.asInfo
+	position relative
+	padding left 60px right 15px
+	f 16px, 1.5em, $white
+	&.dark
+		color $blue-dark
+	&:before
+		content ''
+		size 10px 100%
+		absolute top 0 left 20px
+		background-color $pink
+	p
+		margin-top 15px
 
 footer
 	height 100px 
