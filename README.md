@@ -2,5 +2,6 @@
 
 - For developers:
 - Run `npm install`.
+- Run `npm start` to launch live-server and compile/watch all stylesheets.
 - Run `npm launch` to just launch live-server.
-- Run `npm compile` to just compile all stylesheets.
+- Run `npm watch` to just compile/watch all stylesheets.
