@@ -5,8 +5,8 @@
   "scripts": {
     "start": "concurrently \"npm run launch\" \"npm run watch\"",
     "launch": "live-server",
-    "watch": "stylus --use nib --include-css --compress --watch stylus/index.styl -o css/main.css",
-    "compile": "stylus stylus/index.styl -o css/main.css --use nib --include-css --compress"
+    "watch": "stylus --use nib --include-css --watch stylus/index.styl -o css/main.css",
+    "compile": "stylus --use nib --include-css --compress stylus/index.styl -o css/main.css"
   },
   "repository": {
     "type": "git",
