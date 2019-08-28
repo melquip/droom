@@ -11,6 +11,9 @@
 
 custom-reset()
 
+a
+	color inherit
+
 b, strong
 	f 'bold'
 
@@ -65,24 +68,26 @@ header
 		text-align center
 		background-color $blue-dark
 		transition all .33s ease-in-out
-		&:hover 
-			background-color $gray
-			i:before
-				color $blue-dark
 		i:before
 			transition all .33s ease-in-out
 			f 18px 70px $white
+		&:hover
+			background-color $gray
+			i:before
+				color $blue-dark
 	.hamburger
 		padding 0
 		background-color $blue-light
 		transition all .33s ease-in-out
-		&:hover 
-			background-color $blue-dark
-		&.is-active
+		&:hover, &.is-active
 			background-color $gray
 			.hamburger-inner
 				&, &:after, &:before
 					background-color $blue-dark 
+		&.is-active + nav
+			opacity 1
+			visibility visible
+
 	.hamburger-box
 		size 20px 14px
 	.hamburger-inner
@@ -97,7 +102,72 @@ header
 			bottom -6px
 
 nav 
-	display none
+	z-index 50
+	fixed top 70px left 0
+	size 100% calc(100vh - 70px)
+	background-color $gray
+	transition all .33s ease-in-out
+	opacity 0
+	visibility hidden
+
+	ul
+		padding top 100px
+		li
+			&:last-child
+				margin-top 23px
+				
+				display flex
+				justify-content center
+				a
+					display initial
+					min-height none
+					padding 0 30px
+					&:before, &:after
+						content none
+					&:hover
+						color $blue-light
+
+			a
+				display block
+				min-height 2em
+				overflow hidden
+				position relative
+				f 54px, 2em, 'regular2' $blue-dark lowercase
+				transition all .2s ease-in-out
+				&:before, &:after
+					content ''
+					z-index 1
+					size 100% 10px
+					absolute top 50%
+					transform translateY(-5px)
+					transition all .2s ease-in-out
+				&:before
+					left 0
+					background-color $blue-dark
+				&:after
+					left -100%
+					background-color $blue-light
+				span
+					z-index 2
+					padding 0 30px
+					absolute top 0 left 50%
+					transform translateX(-50%)
+					transition all .2s ease-in-out
+					background-color $gray
+					&:last-child
+						f $blue-light uppercase
+						top 100%
+
+			&:hover a 
+				&:before
+					left 100%
+				&:after
+					left 0
+				span
+					&:first-child
+						top -100%
+					&:last-child
+						top 0
 
 .intro 
 	z-index 2
@@ -139,6 +209,8 @@ nav
 
 .feature1
 	padding 70px 0
+	background-color lighten($gray, 10%)
+
 .reviews
 	padding 70px 0
 	.flex > .column
