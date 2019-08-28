@@ -41,11 +41,14 @@ b, strong
 header, main, footer 
 	max-width 1920px
 	margin 0 auto
-body 
+body
 	padding-top 70px
 	
 .logo img
+	width 100%
 	height 40px
+	object-fit contain
+	object-position center
 
 header 
 	z-index 100
@@ -56,7 +59,7 @@ header
 	.flex
 		.column
 			&:first-child
-				padding top 15px bottom 15px	
+				padding 15px 0
 			&:last-child
 				display flex
 				justify-content flex-end
@@ -111,7 +114,7 @@ nav
 	visibility hidden
 
 	ul
-		padding top 100px
+		padding-top 6.25rem
 		li
 			&:last-child
 				margin-top 23px
@@ -121,7 +124,10 @@ nav
 				a
 					display initial
 					min-height none
-					padding 0 30px
+					padding 0 1em
+					+media(480)
+						padding 0 1.8em
+
 					&:before, &:after
 						content none
 					&:hover
@@ -132,7 +138,7 @@ nav
 				min-height 2em
 				overflow hidden
 				position relative
-				f 54px, 2em, 'regular2' $blue-dark lowercase
+				f 3.375rem, 2em, 'regular2' $blue-dark lowercase
 				transition all .2s ease-in-out
 				&:before, &:after
 					content ''
@@ -149,11 +155,13 @@ nav
 					background-color $blue-light
 				span
 					z-index 2
-					padding 0 30px
+					padding 0 1em
 					absolute top 0 left 50%
 					transform translateX(-50%)
 					transition all .2s ease-in-out
 					background-color $gray
+					+media(480)
+						padding 0 1.8em
 					&:last-child
 						f $blue-light uppercase
 						top 100%
@@ -169,21 +177,47 @@ nav
 					&:last-child
 						top 0
 
+html 
+	font-size 62.5%
+	+media(480)
+		font-size 70%
+	+media(720)
+		font-size 80%
+	+media(1024)
+		font-size 100%
+		
+section .flex
+	&.two > .column
+		flexible(one)
+		+media(1024)
+			flexible(two)
+	&.three 
+		& > .column
+			flexible(one)
+			+media(720)
+				flexible(two, 20px)
+			+media(1024)
+				flexible(three, 30px)
+
 .intro 
 	z-index 2
 	background linear-gradient(180deg, rgba($blue-light,1) 0%, rgba($blue-dark,1) 100%)
 	.inner
 		min-height calc(100vh - 70px)
 	h1
-		max-width 80%
 		padding-top 2.6em
-		f 54px, 1.4em, .1em $white 'bold'
+		f 3.375rem, 1.4em, .1em $white 'bold'
+		+media(1024)
+			max-width 80%
+
 		strong
 			f 'regular2'
 	p
 		max-width 400px
 		margin-top 25px
-		f 16px, 1.5em, $white
+		f 1.4rem, 1.5em, $white
+		+media(1024)
+			font-size 1rem
 	.button
 		margin 30px auto 0
 
@@ -191,8 +225,10 @@ nav
 	display inline-block
 	background-color $white
 	padding .55em 1.11em .33em
-	f 18px, 2em, $blue-dark uppercase center 'bold'
+	f 1.5rem, 2em, $blue-dark uppercase center 'bold'
 	transition all .2s ease-in-out
+	+media(1024)
+		font-size 1.125rem
 	&:hover
 		color $white
 		background-color $blue-dark
@@ -200,36 +236,58 @@ nav
 
 .droom
 	width 100%
-	absolute bottom 100px right 0
-	f 200px, .8em, 'regular2' $white 0.5em center
+	overflow hidden
+	absolute bottom .5em right 0
+	f 7rem, 1em, 'regular2' $white 0.25em center
+	+media(480)
+		font-size 8rem
+	+media(720)
+		font-size 11.5rem
+	+media(1024)
+		font-size 12.5rem
 
 .features
-	padding top 200px bottom 70px
+	padding top 10rem bottom 4.375rem
 	background $blue-dark
+	+media(720)
+		padding-top 18.75rem
 
 .feature1
-	padding 70px 0
 	background-color lighten($gray, 10%)
 
 .reviews
-	padding 70px 0
 	.flex > .column
 		position relative
-		flexible(three, 30px)
 		background-color $gray
 		padding top 30px bottom 30px right 30px left 40px
+		transition all .2s ease-in-out
+		margin-top 30px
+		+media(720)
+			&:nth-child(2)
+				margin-top 0
+		+media(1024)
+			margin-top 0
+
+		&:first-child
+			margin-top 0
 		&:before 
 			content ''
 			size 10px 100%
 			absolute top 0 left 0
 			background-color $pink
-
+			transition background-color .2s ease-in-out
+		&:hover
+			background-color lighten($gray, 10%)
+			box-shadow 1px 1px 5px rgba($blue-dark, .5)
+			&:before 
+				background-color darken($pink, 10%)
+			
 	blockquote
 		position relative
-		padding 42px 50px
-		f 24px, 1.16em, 'bold' $blue-dark center
+		padding 2.625rem 3.125rem
+		f 1.5rem, 1.16em, 'bold' $blue-dark center
 		&:before, &:after 
-			f 48px, 1em, $blue-dark
+			f 3rem, 1em, $blue-dark
 			position absolute
 		&:before
 			content '“'
@@ -242,36 +300,39 @@ nav
 			line-height 0
 	span
 		display block
-		padding-top 20px
-		margin-bottom -5px
-		f 14px, 1em, .1em $blue-dark right
+		padding-top 1.25rem
+		margin-bottom -.3125rem
+		f 0.875rem, 1em, .1em $blue-dark right
 
 .asTitle
 	position relative
-	padding top 39px left 60px
-	margin-bottom 30px
-	f 36px, 1.25em, 'bold' $white
+	padding top 2.4375rem left 3.75rem
+	margin-bottom 1.875rem
+	f 2.25rem, 1.25em, 'bold' $white
 	&.dark
 		color $blue-dark
 	&:before
 		content ''
-		size 30px 75px
+		size 1.875rem 4.6875rem
 		absolute top 0 left 0
 		background-color $blue-light
 		
 .asInfo
 	position relative
-	padding left 60px right 15px
-	f 16px, 1.5em, $white
+	padding left 3.75rem right 0.9375rem
+	f 1rem, 1.5em, $white
 	&.dark
 		color $blue-dark
 	&:before
 		content ''
-		size 10px 100%
-		absolute top 0 left 20px
+		size 0.625rem 100%
+		absolute top 0 left 1.25rem
 		background-color $pink
 	p
-		margin-top 15px
+		margin-top 0.9375rem
+
+.feature1, .reviews, .tryitnow, .newsletter
+	padding 4.375rem 0
 
 footer
 	height 70px

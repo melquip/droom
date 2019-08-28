@@ -332,7 +332,10 @@ body {
   padding-top: 70px;
 }
 .logo img {
+  width: 100%;
   height: 40px;
+  object-fit: contain;
+  object-position: center;
 }
 header {
   z-index: 100;
@@ -344,8 +347,7 @@ header {
   background-color: #fff;
 }
 header .flex .column:first-child {
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 15px 0;
 }
 header .flex .column:last-child {
   display: flex;
@@ -471,7 +473,7 @@ nav {
   visibility: hidden;
 }
 nav ul {
-  padding-top: 100px;
+  padding-top: 6.25rem;
 }
 nav ul li:last-child {
   margin-top: 23px;
@@ -511,7 +513,7 @@ nav ul li:last-child a {
 		display: arguments
 	*/
   min-height: none;
-  padding: 0 30px;
+  padding: 0 1em;
 }
 nav ul li:last-child a:before,
 nav ul li:last-child a:after {
@@ -539,7 +541,7 @@ nav ul li a {
   min-height: 2em;
   overflow: hidden;
   position: relative;
-  font-size: 54px;
+  font-size: 3.375rem;
   line-height: 2em;
   font-family: 'majormonodisplay-regular', 'Arial', sans-serif;
   color: #374451;
@@ -577,7 +579,7 @@ nav ul li a:after {
 }
 nav ul li a span {
   z-index: 2;
-  padding: 0 30px;
+  padding: 0 1em;
   position: absolute;
   top: 0;
   left: 50%;
@@ -609,6 +611,21 @@ nav ul li:hover a span:first-child {
 nav ul li:hover a span:last-child {
   top: 0;
 }
+html {
+  font-size: 62.5%;
+}
+section .flex.two > .column {
+  -webkit-flex: 1 1 100%;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+section .flex.three > .column {
+  -webkit-flex: 1 1 100%;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+  max-width: 100%;
+}
 .intro {
   z-index: 2;
   background: -webkit-linear-gradient(270deg, #6558f5 0%, #374451 100%);
@@ -621,9 +638,8 @@ nav ul li:hover a span:last-child {
   min-height: calc(100vh - 70px);
 }
 .intro h1 {
-  max-width: 80%;
   padding-top: 2.6em;
-  font-size: 54px;
+  font-size: 3.375rem;
   line-height: 1.4em;
   letter-spacing: 0.1em;
   color: #fff;
@@ -635,7 +651,7 @@ nav ul li:hover a span:last-child {
 .intro p {
   max-width: 400px;
   margin-top: 25px;
-  font-size: 16px;
+  font-size: 1.4rem;
   line-height: 1.5em;
   color: #fff;
 }
@@ -660,7 +676,7 @@ nav ul li:hover a span:last-child {
 	*/
   background-color: #fff;
   padding: 0.55em 1.11em 0.33em;
-  font-size: 18px;
+  font-size: 1.5rem;
   line-height: 2em;
   color: #374451;
   text-transform: uppercase;
@@ -679,36 +695,37 @@ nav ul li:hover a span:last-child {
 }
 .droom {
   width: 100%;
+  overflow: hidden;
   position: absolute;
-  bottom: 100px;
+  bottom: 0.5em;
   right: 0;
-  font-size: 200px;
-  line-height: 0.8em;
+  font-size: 7rem;
+  line-height: 1em;
   font-family: 'majormonodisplay-regular', 'Arial', sans-serif;
   color: #fff;
-  letter-spacing: 0.5em;
+  letter-spacing: 0.25em;
   text-align: center;
 }
 .features {
-  padding-top: 200px;
-  padding-bottom: 70px;
+  padding-top: 10rem;
+  padding-bottom: 4.375rem;
   background: #374451;
 }
 .feature1 {
-  padding: 70px 0;
   background-color: #c9d4dd;
-}
-.reviews {
-  padding: 70px 0;
 }
 .reviews .flex > .column {
   position: relative;
-  -webkit-flex: 1 1 calc(33.3333% - 20px);
-  -ms-flex: 1 1 calc(33.3333% - 20px);
-  flex: 1 1 calc(33.3333% - 20px);
-  max-width: calc(33.3333% - 20px);
   background-color: #c3cfd9;
   padding: 30px 30px 30px 40px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  margin-top: 30px;
+}
+.reviews .flex > .column:first-child {
+  margin-top: 0;
 }
 .reviews .flex > .column:before {
   content: '';
@@ -718,11 +735,23 @@ nav ul li:hover a span:last-child {
   top: 0;
   left: 0;
   background-color: #c7c3fa;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  -moz-transition: background-color 0.2s ease-in-out;
+  -o-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+}
+.reviews .flex > .column:hover {
+  background-color: #c9d4dd;
+  -webkit-box-shadow: 1px 1px 5px rgba(55,68,81,0.5);
+  box-shadow: 1px 1px 5px rgba(55,68,81,0.5);
+}
+.reviews .flex > .column:hover:before {
+  background-color: #a19af7;
 }
 .reviews blockquote {
   position: relative;
-  padding: 42px 50px;
-  font-size: 24px;
+  padding: 2.625rem 3.125rem;
+  font-size: 1.5rem;
   line-height: 1.16em;
   font-family: 'montserrat-bold', 'Arial', sans-serif;
   color: #374451;
@@ -730,7 +759,7 @@ nav ul li:hover a span:last-child {
 }
 .reviews blockquote:before,
 .reviews blockquote:after {
-  font-size: 48px;
+  font-size: 3rem;
   line-height: 1em;
   color: #374451;
   position: absolute;
@@ -762,9 +791,9 @@ nav ul li:hover a span:last-child {
 	else
 		display: arguments
 	*/
-  padding-top: 20px;
-  margin-bottom: -5px;
-  font-size: 14px;
+  padding-top: 1.25rem;
+  margin-bottom: -0.3125rem;
+  font-size: 0.875rem;
   line-height: 1em;
   letter-spacing: 0.1em;
   color: #374451;
@@ -772,10 +801,10 @@ nav ul li:hover a span:last-child {
 }
 .asTitle {
   position: relative;
-  padding-top: 39px;
-  padding-left: 60px;
-  margin-bottom: 30px;
-  font-size: 36px;
+  padding-top: 2.4375rem;
+  padding-left: 3.75rem;
+  margin-bottom: 1.875rem;
+  font-size: 2.25rem;
   line-height: 1.25em;
   font-family: 'montserrat-bold', 'Arial', sans-serif;
   color: #fff;
@@ -785,8 +814,8 @@ nav ul li:hover a span:last-child {
 }
 .asTitle:before {
   content: '';
-  width: 30px;
-  height: 75px;
+  width: 1.875rem;
+  height: 4.6875rem;
   position: absolute;
   top: 0;
   left: 0;
@@ -794,9 +823,9 @@ nav ul li:hover a span:last-child {
 }
 .asInfo {
   position: relative;
-  padding-left: 60px;
-  padding-right: 15px;
-  font-size: 16px;
+  padding-left: 3.75rem;
+  padding-right: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.5em;
   color: #fff;
 }
@@ -805,15 +834,21 @@ nav ul li:hover a span:last-child {
 }
 .asInfo:before {
   content: '';
-  width: 10px;
+  width: 0.625rem;
   height: 100%;
   position: absolute;
   top: 0;
-  left: 20px;
+  left: 1.25rem;
   background-color: #c7c3fa;
 }
 .asInfo p {
-  margin-top: 15px;
+  margin-top: 0.9375rem;
+}
+.feature1,
+.reviews,
+.tryitnow,
+.newsletter {
+  padding: 4.375rem 0;
 }
 footer {
   height: 70px;
@@ -829,15 +864,75 @@ footer {
   .inner {
     max-width: 440px;
   }
+  nav ul li:last-child a {
+    padding: 0 1.8em;
+  }
+  nav ul li a span {
+    padding: 0 1.8em;
+  }
+  html {
+    font-size: 70%;
+  }
+  .droom {
+    font-size: 8rem;
+  }
 }
 @media only screen and (min-width: 720px) {
   .inner {
     max-width: 640px;
   }
+  html {
+    font-size: 80%;
+  }
+  section .flex.three > .column {
+    -webkit-flex: 1 1 calc(50% - 10px);
+    -ms-flex: 1 1 calc(50% - 10px);
+    flex: 1 1 calc(50% - 10px);
+    max-width: calc(50% - 10px);
+  }
+  .droom {
+    font-size: 11.5rem;
+  }
+  .features {
+    padding-top: 18.75rem;
+  }
+  .reviews .flex > .column:nth-child(2) {
+    margin-top: 0;
+  }
 }
 @media only screen and (min-width: 1024px) {
   .inner {
     max-width: 840px;
+  }
+  html {
+    font-size: 100%;
+  }
+  section .flex.two > .column {
+    -webkit-flex: 1 1 50%;
+    -ms-flex: 1 1 50%;
+    flex: 1 1 50%;
+    max-width: 50%;
+  }
+  section .flex.three > .column {
+    -webkit-flex: 1 1 calc(33.3333% - 20px);
+    -ms-flex: 1 1 calc(33.3333% - 20px);
+    flex: 1 1 calc(33.3333% - 20px);
+    max-width: calc(33.3333% - 20px);
+  }
+  .intro h1 {
+    max-width: 80%;
+  }
+  .intro p {
+    font-size: 1rem;
+  }
+  .button {
+    font-size: 1.125rem;
+  }
+  .droom {
+    font-size: 12.5rem;
+  }
+  .reviews .flex > .column {
+    margin-top: 0;
   }
 }
 @media only screen and (min-width: 1280px) {
