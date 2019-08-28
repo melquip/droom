@@ -284,6 +284,33 @@ input[type="number"]::-webkit-outer-spin-button {
   -moz-appearance: none !important;
   appearance: none !important;
 }
+.animated {
+  visibility: hidden;
+}
+.animated.animdone {
+  visibility: visible;
+}
+.animated .delay-025s {
+  -webkit-animation-delay: 0.25s;
+  -moz-animation-delay: 0.25s;
+  -o-animation-delay: 0.25s;
+  -ms-animation-delay: 0.25s;
+  animation-delay: 0.25s;
+}
+.animated .delay-050s {
+  -webkit-animation-delay: 0.05s;
+  -moz-animation-delay: 0.05s;
+  -o-animation-delay: 0.05s;
+  -ms-animation-delay: 0.05s;
+  animation-delay: 0.05s;
+}
+.animated .delay-075s {
+  -webkit-animation-delay: 0.25s;
+  -moz-animation-delay: 0.25s;
+  -o-animation-delay: 0.25s;
+  -ms-animation-delay: 0.25s;
+  animation-delay: 0.25s;
+}
 a {
   color: inherit;
 }
@@ -332,8 +359,8 @@ body {
   padding-top: 70px;
 }
 .logo img {
-  width: 100%;
   height: 40px;
+  width: 100%;
   object-fit: contain;
   object-position: center;
 }
@@ -638,10 +665,10 @@ section .flex.three > .column {
   min-height: calc(100vh - 70px);
 }
 .intro h1 {
-  padding-top: 2.6em;
+  padding-top: 1.5em;
   font-size: 3.375rem;
-  line-height: 1.4em;
-  letter-spacing: 0.1em;
+  line-height: 1.2em;
+  letter-spacing: 0.05em;
   color: #fff;
   font-family: 'montserrat-bold', 'Arial', sans-serif;
 }
@@ -696,13 +723,20 @@ section .flex.three > .column {
 .droom {
   width: 100%;
   overflow: hidden;
+  padding-left: 2vw;
+  opacity: 0.5;
   position: absolute;
-  bottom: 0.5em;
-  right: 0;
-  font-size: 7rem;
+  bottom: 0.25em;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  font-size: 6.8rem;
   line-height: 1em;
   font-family: 'majormonodisplay-regular', 'Arial', sans-serif;
-  color: #fff;
+  color: #c3cfd9;
   letter-spacing: 0.25em;
   text-align: center;
 }
@@ -722,7 +756,7 @@ section .flex.three > .column {
   -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
-  margin-top: 30px;
+  margin-top: 1.875rem;
 }
 .reviews .flex > .column:first-child {
   margin-top: 0;
@@ -848,7 +882,7 @@ section .flex.three > .column {
 .reviews,
 .tryitnow,
 .newsletter {
-  padding: 4.375rem 0;
+  padding: 3.375rem 0;
 }
 footer {
   height: 70px;
@@ -858,6 +892,12 @@ footer {
 @media only screen and (min-width: 360px) {
   .inner {
     max-width: 320px;
+  }
+  .logo img {
+    width: auto;
+  }
+  .droom {
+    font-size: 7rem;
   }
 }
 @media only screen and (min-width: 480px) {
@@ -873,8 +913,19 @@ footer {
   html {
     font-size: 70%;
   }
+  .intro h1 {
+    padding-top: 2.6em;
+    line-height: 1.4em;
+    letter-spacing: 0.1em;
+  }
   .droom {
     font-size: 8rem;
+  }
+  .feature1,
+  .reviews,
+  .tryitnow,
+  .newsletter {
+    padding: 4.375rem 0;
   }
 }
 @media only screen and (min-width: 720px) {
@@ -894,7 +945,7 @@ footer {
     font-size: 11.5rem;
   }
   .features {
-    padding-top: 18.75rem;
+    padding-top: 16rem;
   }
   .reviews .flex > .column:nth-child(2) {
     margin-top: 0;
@@ -930,6 +981,9 @@ footer {
   }
   .droom {
     font-size: 12.5rem;
+  }
+  .features {
+    padding-top: 18.75rem;
   }
   .reviews .flex > .column {
     margin-top: 0;

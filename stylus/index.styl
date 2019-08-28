@@ -11,6 +11,17 @@
 
 custom-reset()
 
+.animated
+	visibility hidden
+	&.animdone
+		visibility visible
+	.delay-025s
+		animation-delay .25s
+	.delay-050s
+		animation-delay .05s
+	.delay-075s
+		animation-delay .25s
+
 a
 	color inherit
 
@@ -45,10 +56,12 @@ body
 	padding-top 70px
 	
 .logo img
-	width 100%
 	height 40px
+	width 100%
 	object-fit contain
 	object-position center
+	+media(360)
+		width auto
 
 header 
 	z-index 100
@@ -205,8 +218,12 @@ section .flex
 	.inner
 		min-height calc(100vh - 70px)
 	h1
-		padding-top 2.6em
-		f 3.375rem, 1.4em, .1em $white 'bold'
+		padding-top 1.5em
+		f 3.375rem, 1.2em, .05em $white 'bold'
+		+media(480)
+			padding-top 2.6em
+			line-height 1.4em
+			letter-spacing .1em
 		+media(1024)
 			max-width 80%
 
@@ -237,8 +254,13 @@ section .flex
 .droom
 	width 100%
 	overflow hidden
-	absolute bottom .5em right 0
-	f 7rem, 1em, 'regular2' $white 0.25em center
+	padding-left 2vw
+	opacity .5
+	absolute bottom 0.25em left 50%
+	transform translateX(-50%)
+	f 6.8rem, 1em, 'regular2' $gray 0.25em center
+	+media(360)
+		font-size 7rem
 	+media(480)
 		font-size 8rem
 	+media(720)
@@ -250,6 +272,8 @@ section .flex
 	padding top 10rem bottom 4.375rem
 	background $blue-dark
 	+media(720)
+		padding-top 16rem
+	+media(1024)
 		padding-top 18.75rem
 
 .feature1
@@ -261,7 +285,7 @@ section .flex
 		background-color $gray
 		padding top 30px bottom 30px right 30px left 40px
 		transition all .2s ease-in-out
-		margin-top 30px
+		margin-top 1.875rem
 		+media(720)
 			&:nth-child(2)
 				margin-top 0
@@ -332,7 +356,9 @@ section .flex
 		margin-top 0.9375rem
 
 .feature1, .reviews, .tryitnow, .newsletter
-	padding 4.375rem 0
+	padding 3.375rem 0
+	+media(480)
+		padding 4.375rem 0
 
 footer
 	height 70px
