@@ -9,7 +9,17 @@
 	});
 
 	// Droom parallax effect
-	
+	$('.intro').liveParallax([
+		{ 
+			element:".droom", 
+			posStart: 0, 
+			posFinish: 100, 
+			property:"bottom", 
+			vStart: 0.5, 
+			vFinish: -1.125, 
+			unit:"em"
+		}
+	]);
 
 	// smooth scrolling
 	$('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function (event) {
