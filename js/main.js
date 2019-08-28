@@ -12,12 +12,20 @@
 	$('.intro').liveParallax([
 		{ 
 			element:".droom", 
-			posStart: 0, 
-			posFinish: 100, 
+			posStart: 25, 
+			posFinish: 90, 
 			property:"bottom", 
-			vStart: 0.5, 
-			vFinish: -1.125, 
+			vStart: 0.25, 
+			vFinish: -1.2, 
 			unit:"em"
+		},{ 
+			element:".droom", 
+			posStart: 25, 
+			posFinish: 90, 
+			property:"opacity", 
+			vStart: 0.5, 
+			vFinish: 1, 
+			unit:""
 		}
 	]);
 
@@ -43,4 +51,33 @@
 			}
 		}
 	});
+
+	// checks if an element is inside the viewport 
+	$.fn.isInViewport = function($sides) {
+		let box = $(this).get(0).getBoundingClientRect();
+		let boxSides = $sides.length === 0 ? ["top", "left", "bottom", "right"] : $sides;
+		let top = $.inArray("top", boxSides) > -1 ? box.top >= 0 : true;
+		let left = $.inArray("left", boxSides) > -1 ? box.left >= 0 : true;
+		let bottom = $.inArray("bottom", boxSides) > -1 ? box.bottom <= (window.innerHeight || document.documentElement.clientHeight) : true;
+		let right = $.inArray("right", boxSides) > -1 ? box.right <= (window.innerWidth || document.documentElement.clientWidth) : true;
+		return top && left && bottom && right;
+	};
+
+	// activate animate.css on scroll after loading
+	let animateElements = $('[data-animate]');
+	$(window).on('scroll', function() {
+		animateElements.each(function() {
+			let $this = $(this);
+			if (!$this.hasClass("animdone")) {
+				if($this.isInViewport(["bottom"])) {
+					$this.addClass($this.data("animate") + " animdone");
+				}
+			}
+		});
+	});
+	// always start on begining of page after loading
+	$('html, body').scrollTop(0);
+	setTimeout(function() {
+		$(window).trigger('scroll');
+	}, 1100);
 })(jQuery);
