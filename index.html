@@ -13,15 +13,15 @@
 	<script defer src="./js/main.js"></script>
 </head>
 <body>
-	<div id="loading">
+	<!-- <div id="loading">
 		<div class="inner">
 			<img src="img/droom-blue.svg" alt="Droom Logotype">
 		</div>
-	</div>
+	</div> -->
 	<header>
 		<div class="inner flex two">
 			<div class="column">
-				<a href="" class="logo"><img src="img/droom-blue.png" alt="Droom Logotype"></a>
+				<a href="index.html" class="logo"><img src="img/droom-blue.png" alt="Droom Logotype"></a>
 			</div>
 			<div class="column">
 				<a class="login" href="#"><i class="icon-user-o"></i></a>
@@ -33,7 +33,7 @@
 				<nav id="navigation">
 					<div class="inner">
 						<ul>
-							<li><a href="#"><span>About</span><span>About</span></a></li>
+							<li><a href="about.html"><span>About</span><span>About</span></a></li>
 							<li><a href="#"><span>Company</span><span>Company</span></a></li>
 							<li><a href="#"><span>Support</span><span>Support</span></a></li>
 							<li>
@@ -118,26 +118,34 @@
 			</div>
 		</section>
 		<section class="tryitnow">
-			<!-- animated data-animate="fadeInUp" -->
-			<div class="inner">
-				<h2 class="asTitle">Sign up to our newsletter</h2>
-				<p>Receive our latest stuff our latest stuff our latest stuff</p>
-				<a href="#login" class="button">Create new account</a>
+			<div class="inner flex two" data-animate="fadeInUp">
+				<div class="column">
+					<h2 class="asTitle dark animated" data-animate="fadeInUp">Try <span>Droom</span> now!</h2>
+					<p class="asInfo dark animated" data-animate="fadeInUp">Receive our latest stuff our latest stuff our latest stuff</p>
+				</div>
+				<div class="column animated" data-animate="fadeInUp">
+					<a href="#login" class="button">Sign up</a>
+				</div>
 			</div>
 		</section>
 		<section class="newsletter">
 			<div class="inner">
-				<h2 class="asTitle">Sign up to our newsletter</h2>
-				<p>Receive our latest stuff our latest stuff our latest stuff</p>
-				<form action="index.html#newsletter" method="post">
-					<label for="newsletter">Sign up to our newsletter</label>
-					<input id="newsletter" name="newsletter" type="text" placeholder="Your email here">
-					<div class="forCheckbox">
-						<input id="gdpr" name="gdpr" type="checkbox">
-						<label for="gdpr">I agree to the <a href="#">terms of service</a></label>
-					</div>
+				<div class="container">
+					<h2 class="asTitle dark animated" data-animate="fadeInUp">Sign up to our newsletter</h2>
+					<p class="asInfo dark animated" data-animate="fadeInUp">Receive our latest stuff our latest stuff our latest stuff</p>
+					<form action="index.html#newsletter" method="post">
+						<label for="newsletter"></label>
+						<div class="flex submit animated" data-animate="fadeInUp">
+							<input id="newsletter" name="newsletter" type="email" placeholder="Your email here">
+							<button>Submit</button>
+						</div>
+						<div class="forCheckbox animated" data-animate="fadeInUp">
+							<input id="gdpr" name="gdpr" type="checkbox">
+							<label class="asIcon" for="gdpr">I agree to the <a href="#">terms of service</a> texto so para ocupar espaco texto so para ocupar espaco texto so para ocupar espaco texto so para ocupar espaco texto so para ocupar espaco</label>
+						</div>
 
-				</form>
+					</form>
+				</div>
 			</div>
 		</section>
 	</main>
