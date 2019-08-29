@@ -1,8 +1,4 @@
 (function ($) {
-
-	const log = () => console.log.apply(console, arguments);
-	log('main.js is working');
-
 	// menu animation
 	$('.hamburger').on('click', function () {
 		$(this).toggleClass('is-active');
@@ -75,9 +71,11 @@
 			}
 		});
 	});
+
 	// always start on begining of page after loading
 	$('html, body').scrollTop(0);
 	setTimeout(function() {
 		$(window).trigger('scroll');
 	}, 1100);
+	
 })(jQuery);
