@@ -736,7 +736,7 @@ section .flex.three > .column {
   font-size: 6.8rem;
   line-height: 1em;
   font-family: 'majormonodisplay-regular', 'Arial', sans-serif;
-  color: #c3cfd9;
+  color: #c9d4dd;
   letter-spacing: 0.25em;
   text-align: center;
 }
@@ -745,8 +745,24 @@ section .flex.three > .column {
   padding-bottom: 4.375rem;
   background: #374451;
 }
+.features .flex .column:last-child {
+  padding-top: 2.5rem;
+}
+.features img {
+  object-fit: cover;
+  width: 100%;
+  max-height: 400px;
+}
 .feature1 {
   background-color: #c9d4dd;
+}
+.feature1 .flex .column:first-child {
+  padding-bottom: 2rem;
+}
+.feature1 img {
+  object-fit: cover;
+  width: 100%;
+  max-height: 400px;
 }
 .reviews .flex > .column {
   position: relative;
@@ -887,12 +903,34 @@ section .flex.three > .column {
   padding: 3.375rem 0;
 }
 footer {
-  height: 70px;
-  padding: 15px 0;
+  padding: 16px 0 14px;
+  font-size: 1rem;
+  line-height: 24px;
+  color: #fff;
   background-color: #6558f5;
 }
+footer .flex.two > .column {
+  -webkit-flex: 1 1 100%;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+  max-width: 100%;
+  text-align: center;
+}
+footer .flex.two > .column:first-child {
+  -ms-flex-order: 2;
+  -webkit-order: 2;
+  order: 2;
+}
+footer .flex.two > .column:last-child {
+  -ms-flex-order: 1;
+  -webkit-order: 1;
+  order: 1;
+}
+footer a {
+  padding: 0 1rem;
+}
 .tryitnow {
-  background-color: #c3cfd9;
+  background-color: #c9d4dd;
 }
 .tryitnow h2 span {
   font-family: 'majormonodisplay-regular', 'Arial', sans-serif;
@@ -1126,6 +1164,16 @@ footer {
   padding: 1.5rem;
   padding-left: 4rem;
 }
+.colorize {
+  filter: grayscale(90%);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.colorize:hover {
+  filter: grayscale(0);
+}
 @media only screen and (min-width: 360px) {
   .inner {
     max-width: 320px;
@@ -1193,16 +1241,16 @@ footer {
     margin-top: 0;
   }
   .tryitnow .flex.two > .column:first-child {
-    -webkit-flex: 1 1 65%;
-    -ms-flex: 1 1 65%;
-    flex: 1 1 65%;
-    max-width: 65%;
+    -webkit-flex: 1 1 60%;
+    -ms-flex: 1 1 60%;
+    flex: 1 1 60%;
+    max-width: 60%;
   }
   .tryitnow .flex.two > .column:last-child {
-    -webkit-flex: 1 1 35%;
-    -ms-flex: 1 1 35%;
-    flex: 1 1 35%;
-    max-width: 35%;
+    -webkit-flex: 1 1 40%;
+    -ms-flex: 1 1 40%;
+    flex: 1 1 40%;
+    max-width: 40%;
     text-align: right;
     padding: 0;
   }
@@ -1283,6 +1331,36 @@ footer {
   .features {
     padding-top: 18.75rem;
   }
+  .features .flex .column:last-child {
+    padding-top: 15px;
+    padding-left: 20px;
+  }
+  .feature1 .flex .column:first-child {
+    padding-top: 15px;
+    padding-right: 20px;
+    padding-bottom: 0;
+  }
+  footer {
+    line-height: 40px;
+  }
+  footer .flex.two > .column {
+    -webkit-flex: 1 1 50%;
+    -ms-flex: 1 1 50%;
+    flex: 1 1 50%;
+    max-width: 50%;
+    text-align: left;
+  }
+  footer .flex.two > .column:first-child {
+    -ms-flex-order: -1;
+    -webkit-order: -1;
+    order: -1;
+  }
+  footer .flex.two > .column:last-child {
+    text-align: right;
+  }
+  footer a:last-child {
+    padding-right: 0;
+  }
   .tryitnow .flex.two > .column:first-child {
     -webkit-flex: 1 1 70%;
     -ms-flex: 1 1 70%;
@@ -1296,7 +1374,7 @@ footer {
     max-width: 30%;
   }
   .tryitnow .button {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 }
 @media only screen and (min-width: 1280px) {
@@ -1311,6 +1389,9 @@ footer {
   }
   .reviews .flex > .column {
     margin-top: 0;
+  }
+  .tryitnow .button {
+    font-size: 1.5rem;
   }
   .team .flex > .column {
     margin-top: 0;

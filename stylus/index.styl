@@ -258,7 +258,7 @@ section .flex
 	opacity .5
 	absolute bottom 0.25em left 50%
 	transform translateX(-50%)
-	f 6.8rem, 1em, 'regular2' $gray 0.25em center
+	f 6.8rem, 1em, 'regular2' lighten($gray, 10%) 0.25em center
 	+media(360)
 		font-size 7rem
 	+media(480)
@@ -276,8 +276,25 @@ section .flex
 	+media(1024)
 		padding-top 18.75rem
 
+	.flex .column:last-child
+		padding-top 2.5rem
+		+media(1024)
+			padding top 15px left 20px
+	img
+		object-fit cover
+		width 100%
+		max-height 400px
+
 .feature1
 	background-color lighten($gray, 10%)
+	.flex .column:first-child
+		padding-bottom 2rem 
+		+media(1024)
+			padding top 15px right 20px bottom 0
+	img
+		object-fit cover
+		width 100%
+		max-height 400px
 
 .reviews
 	.flex > .column
@@ -361,12 +378,35 @@ section .flex
 		padding 4.375rem 0
 
 footer
-	height 70px
-	padding 15px 0
+	padding 16px 0 14px
+	f 1rem, 24px, $white
 	background-color $blue-light
+	+media(1024)
+		line-height 40px
+
+	.flex.two > .column
+		flexible(one)
+		text-align center
+		+media(1024)
+			flexible(two)
+			text-align left 
+		&:first-child
+			order 2
+			+media(1024)
+				order -1
+		&:last-child
+			order 1
+			+media(1024)
+				text-align right
+
+	a
+		padding 0 1rem
+		&:last-child
+			+media(1024)
+				padding-right 0
 
 .tryitnow
-	background-color $gray
+	background-color lighten($gray, 10%)
 	h2 span
 		f 'regular2' uppercase $blue-light
 	.flex.two
@@ -377,9 +417,9 @@ footer
 				padding top 2rem left 3.75rem
 			+media(720)
 				&:first-child
-					flexible(65%)
+					flexible(60%)
 				&:last-child
-					flexible(35%)
+					flexible(40%)
 					text-align right
 					padding 0
 			+media(1024)
@@ -391,6 +431,8 @@ footer
 	.button
 		font-size 1.1rem
 		+media(1024)
+			font-size 1.3rem
+		+media(1280)
 			font-size 1.5rem
 
 .newsletter
@@ -521,5 +563,11 @@ footer
 			padding-left 4rem
 			+media(720)
 				padding-left 1.5rem
-				
+
+.colorize
+	filter grayscale(90%)
+	transition all .2s ease-in-out
+	&:hover
+		filter grayscale(0)
+
 apply_media_cache()
