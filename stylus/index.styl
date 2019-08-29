@@ -521,5 +521,11 @@ footer
 			padding-left 4rem
 			+media(720)
 				padding-left 1.5rem
-				
+
+.colorize
+	filter grayscale(100%)
+	transition all .2s ease-in-out
+	&:hover
+		filter grayscale(0)
+
 apply_media_cache()

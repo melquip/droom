@@ -1126,6 +1126,16 @@ footer {
   padding: 1.5rem;
   padding-left: 4rem;
 }
+.colorize {
+  filter: grayscale(100%);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.colorize:hover {
+  filter: grayscale(0);
+}
 @media only screen and (min-width: 360px) {
   .inner {
     max-width: 320px;
