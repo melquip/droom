@@ -800,7 +800,7 @@ section .flex.three > .column {
 }
 .reviews blockquote {
   position: relative;
-  padding: 2.625rem 3.125rem;
+  padding: 2.625rem 1rem;
   font-size: 1.5rem;
   line-height: 1.16em;
   font-family: 'montserrat-bold', 'Arial', sans-serif;

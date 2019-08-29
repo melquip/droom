@@ -33,7 +33,7 @@
 			if (target.length) {
 				event.preventDefault();
 				$('html, body').animate({
-					scrollTop: target.offset().top - 70
+					scrollTop: target.offset().top - 80
 				}, 1000, function () {
 					var $target = $(target);
 					$target.focus();
@@ -73,9 +73,9 @@
 	});
 
 	// always start on begining of page after loading
-	$('html, body').scrollTop(0);
 	setTimeout(function() {
+		$('html, body').scrollTop(0);
 		$(window).trigger('scroll');
-	}, 1100);
+	}, 1000);
 	
 })(jQuery);
