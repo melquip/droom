@@ -1,0 +1,2361 @@
+/* NIB FUNCTIONS */
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* border-radius.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Helper for border-radius().
+ */
+
+-apply-border-radius(pos, importance)
+	if length(pos) == 3
+		// border-radius: <top | bottom> <left | right> <n>
+		y = pos[0]
+		x = pos[1]
+		// We don't use vendor for boder-radius anymore
+		// vendor('border-radius-%s%s' % pos, pos[2], only: webkit official)
+		{'border-%s-%s-radius' % pos}: pos[2] importance
+	else if pos[0] in (top bottom)
+		// border-radius: <top | bottom> <n>
+		-apply-border-radius(pos[0] left pos[1], importance)
+		-apply-border-radius(pos[0] right pos[1], importance)
+	else if pos[0] in (left right)
+		// border-radius: <left | right> <n>
+		unshift(pos, top);
+		-apply-border-radius(pos, importance)
+		pos[0] = bottom
+		-apply-border-radius(pos, importance)
+
+/*
+ * border-radius supporting augmented behavior.
+ *
+ * Examples:
+ *
+ *    border-radius: 2px 5px
+ *    border-radius: top 5px bottom 10px
+ *    border-radius: left 5px
+ *    border-radius: top left 5px
+ *    border-radius: top left 10px bottom right 5px
+ *    border-radius: top left 10px, bottom right 5px
+ *
+ */
+
+border-radius()
+	pos = ()
+	augmented = false
+	importance = arguments[length(arguments) - 1] == !important ? !important : unquote('')
+	for args in arguments
+		for arg in args
+			if arg is a 'ident'
+				append(pos, arg)
+				augmented = true
+			else
+				append(pos, arg)
+				if augmented
+					-apply-border-radius(pos, importance)
+					pos = ()
+	border-radius pos unless augmented
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* border.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * border: <color>
+ * border: ...
+ */
+
+border(color, args...)
+	if color is a 'color'
+		border: 1px solid color args
+	else
+		border: arguments
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* clearfix.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * The Magnificent Micro Clearfix
+ *
+ * Useful for clearing floats without structural markup.
+ * Prevents margin-collapsing on child elements in most cases.
+ *
+ */
+
+clearfix()
+	zoom 1 if support-for-ie
+	&:before
+	&:after
+		content ''
+		display table
+	&:after
+		clear both
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* color-image.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+
+color-image(color)
+	error('node-canvas is required for color-image()') unless has-canvas
+	colorImage = create-color-image(color)
+	'url(%s)' % color-data-uri(colorImage)
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* config.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Support for ie defaulting to true.
+ */
+
+support-for-ie ?= true
+
+/*
+ * Default vendor prefixes.
+ */
+
+vendor-prefixes ?= webkit moz o ms official
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* flex.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+
+/*
+ * Vendor "display: flex" support with fallback to obsolete versions.
+ */
+
+flex-version = flex nobox
+/* box */
+
+//
+// 1. Display values
+//    - http://www.w3.org/TR/css3-flexbox/#flex-containers
+//
+display(type, args...)
+	display type args
+	/*
+	if flex == type or inline-flex == type
+		if box in flex-version
+			if flex == type
+				display: -ms-flexbox args
+				display: vendor-value(box args, only: moz webkit)
+			else
+				display: -ms-inline-flexbox args
+				display: vendor-value(inline-box args, only: moz webkit)
+		if flex in flex-version
+			display: vendor-value(arguments, only: webkit official) // overwrites old webkit
+	else
+		display: arguments
+	*/
+/*
+ * New syntax for browsers like Google Chrome.
+ * Plus a translation to the old syntax, if possible.
+ */
+
+writing-mode()
+	vendor('writing-mode', arguments, only: webkit ms official)
+
+//
+// 5. Ordering and Orientation
+//    - http://www.w3.org/TR/css3-flexbox/#ordering-and-orientation
+//
+-flex-obsolete-direction(direction)
+	if box in flex-version
+		if row-reverse == direction or column-reverse == direction
+			vendor('box-direction', reverse, ignore: ms official)
+
+		if row == direction or row-reverse == direction
+			vendor('box-orient', horizontal, ignore: ms official)
+		else if column == direction or column-reverse == direction
+			vendor('box-orient', vertical, ignore: ms official)
+
+-flex-obsolete-wrap(value)
+	if box in flex-version
+		// WARN: wrap-reverse does not have a box equivalent. This will render in different manners
+		//    on box vs. flex values.
+		if 'wrap' == value or wrap-reverse == value
+			vendor('box-lines', multiple, ignore: ms official)
+		else if nowrap == value
+			vendor('box-lines', single, ignore: ms official)
+
+flex-direction(direction)
+	// obsolete
+	-flex-obsolete-direction(direction)
+
+	// new
+	if flex in flex-version
+		vendor('flex-direction', arguments, only: webkit ms official)
+
+flex-wrap(value)
+	// obsolete
+	-flex-obsolete-wrap(value)
+
+	if flex in flex-version
+		vendor('flex-wrap', arguments, only: webkit ms official)
+
+flex-flow()
+	// obsolete
+	-flex-obsolete-direction(arguments[0])
+	-flex-obsolete-direction(arguments[1])
+	-flex-obsolete-wrap(arguments[0])
+	-flex-obsolete-wrap(arguments[1])
+
+	// new
+	if flex in flex-version
+		vendor('flex-flow', arguments, only: webkit ms official)
+
+
+order()
+	// obsolete
+	if box in flex-version
+		vendor('box-ordinal-group', arguments, ignore: ms official)
+
+	// new
+	if flex in flex-version
+		vendor('flex-order', arguments, only: ms)
+		vendor('order', arguments, only: webkit official)
+
+
+//
+// 7. Flexibility
+//    - http://www.w3.org/TR/css3-flexbox/#flexibility
+//
+flex-grow(growth)
+	// obsolete
+	if box in flex-version
+		vendor('box-flex', growth)
+
+	// new
+	if flex in flex-version
+		vendor('flex-grow', arguments, only: webkit official)
+
+flex-basis()
+	if flex in flex-version
+		vendor('flex-basis', arguments, only: webkit official)
+
+flex-shrink()
+	if flex in flex-version
+		vendor('flex-shrink', arguments, only: webkit official)
+
+flex(growth)
+
+	// obsolete
+	if box in flex-version
+		shrink = 1
+
+		if none == growth or initial == growth
+			// Well known values
+			shrink = 0 if none == growth
+			growth = 0
+		else if is-width(growth) == true
+			// Basis is defined as the first parameter
+			growth = arguments[1] or 0
+			shrink = arguments[2] if 3 <= length(arguments)
+		else if arguments[1] and is-width(arguments[1]) == false
+			// Growth is first and shrink is second
+			shrink = arguments[1]
+
+		// Since we can't make the distinction between growing and shrinking in the box model, take
+		// the one that provides the most flexibility.
+		vendor('box-flex', max(growth, shrink), ignore: ms)
+
+	// new
+	if flex in flex-version
+		vendor('flex', arguments, only: webkit ms official)
+
+
+// converts the justification alignment
+-convert-justify(align)
+	if flex-start == align
+		return start
+	else if flex-end == align
+		return end
+	else if space-around == align
+		return distribute
+	else if space-between == align
+		return justify
+	else
+		return align
+
+//
+// 8. Alignment
+//    - http://www.w3.org/TR/css3-flexbox/#alignment
+//
+justify-content(align)
+	// obsolete
+	if box in flex-version
+		vendor('box-pack', -convert-justify(align), ignore: ms official)
+
+	// new
+	if flex in flex-version
+		vendor('flex-pack', -convert-justify(align), only: ms)
+		vendor('justify-content', align, only: webkit official)
+
+align-content(align)
+	// WARN: Obsolete spec does not allow for adjustment here
+	if flex in flex-version
+		vendor('flex-line-pack', -convert-justify(align), only: ms)
+		vendor('align-content', align, only: webkit official)
+
+// converts alignment from 'flex' to normal value
+-convert-alignment(align)
+	if flex-start == align
+		return start
+	else if flex-end == align
+		return end
+	else
+		return align
+
+align-items(align)
+	// obsolete
+	if box in flex-version
+		vendor('box-align', -convert-alignment(align), ignore: ms official)
+	// new
+	if flex in flex-version
+		vendor('flex-align', -convert-alignment(align), only: ms)
+		vendor('align-items', arguments, only: webkit official)
+
+align-self(align)
+	// WARN: Obsolete spec does not allow for overriding alignment on individual items.
+	if flex in flex-version
+		vendor('align-self', align, only: webkit official)
+		vendor('flex-item-align', -convert-alignment(align), only: ms)
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* gradients.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*@import 'config'*/
+
+/*
+ * Implicit color stop position.
+ */
+
+pos-in-stops(i, stops)
+	len = length(stops)
+	if len - 1 == i
+		100%
+	else if i
+		unit(i / len * 100, '%')
+	else
+		0
+
+/*
+ * Normalize color stops:
+ *
+ *   - (color pos) -> (pos color)
+ *   - (color) -> (implied-pos color)
+ *
+ */
+
+normalize-stops(stops)
+	stops = clone(stops)
+	for stop, i in stops
+		if length(stop) == 1
+			color = stop[0]
+			stop[0] = pos-in-stops(i, stops)
+			stop[1] = color
+		else if typeof(stop[1]) == 'unit'
+			pos = stop[1]
+			stop[1] = stop[0]
+			stop[0] = pos
+	stops
+
+/*
+ * Join color stops with the given translation function.
+ */
+
+join-stops(stops, translate)
+	str = ''
+	len = length(stops)
+	for stop, i in stops
+		str += ', ' if i
+		pos = stop[0]
+		color = stop[1]
+		str += translate(color, pos)
+	unquote(str)
+
+/*
+ * Standard color stop.
+ */
+
+std-stop(color, pos)
+	'%s %s' % (color pos)
+
+/*
+ * Create a linear gradient with the given start position
+ * and variable number of color stops.
+ *
+ * Examples:
+ *
+ *    background: linear-gradient(top, red, green, blue)
+ *    background: linear-gradient(bottom, red, green 50%, blue)
+ *    background: linear-gradient(bottom, red, 50% green, blue)
+ *    background: linear-gradient(bottom, red, 50% green, 90% white, blue)
+ *
+ */
+
+linear-gradient(start, stops...)
+	error('color stops required') unless length(stops)
+
+	unquote('linear-gradient(' + join(', ',arguments) + ')')
+
+/*
+ * Create a linear gradient image with the given start position
+ * and variable number of color stops.
+ */
+
+linear-gradient-image(start, stops...)
+	error('node-canvas is required for linear-gradient-image()') unless has-canvas
+	stops = stops[0] if length(stops) == 1
+	error('gradient image size required') unless start[0] is a 'unit'
+	size = start[0]
+	start = start[1] or 'top'
+	grad = create-gradient-image(size, start)
+	stops = normalize-stops(stops)
+	add-color-stop(grad, stop[0], stop[1]) for stop in stops
+	'url(%s)' % gradient-data-uri(grad)
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* iconic.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+iconic-stroke(path)
+	@font-face
+		font-family: 'IconicStroke'
+		src: url(path + '/iconic_stroke.eot')
+		src: local('☺'), url(path + '/iconic_stroke.ttf') format('truetype'), url(path + '/iconic_stroke.svg#iconic') format('svg')
+		font-weight: normal
+		font-style: normal
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* image.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+
+/*
+ * Define background-image as `path` with optional width and height, adding an
+ * @2x variant.
+ *
+ * affected by github.com/LearnBoost/stylus/issues/1050 and
+ * github.com/LearnBoost/stylus/issues/1038 ... refactor when those are closed
+ */
+
+image(path, w = auto, h = auto, min_pixel_ratio = 1.5)
+	background-image: url(path)
+	s = 'all and (-webkit-min-device-pixel-ratio:' + min_pixel_ratio + '),'
+	s = s + '(min--moz-device-pixel-ratio:' + min_pixel_ratio + '),'
+	s = s + '(-o-min-device-pixel-ratio:' + min_pixel_ratio + '/1),'
+	s = s + '(min-device-pixel-ratio:' + min_pixel_ratio + '),'
+	s = s + '(min-resolution:' + unit(min_pixel_ratio*92, dpi) + '),'
+	s = s + '(min-resolution:' + unit(min_pixel_ratio, dppx) + ')'
+	@media s
+		ext = extname(path)
+		path = pathjoin(dirname(path), basename(path, ext) + '@2x' + ext)
+		background-image: url(path)
+		if w in (cover contain) and h == auto
+				h = null
+		background-size: w h
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* overflow.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Overflow utility. Maps to regular overflow, and adds an ellipsis value.
+ * Synopsis:
+ *   overflow: <type>
+ * Examples:
+ *     overflow: auto
+ *     overflow: hidden
+ *     overflow: ellipsis
+ */
+
+overflow()
+	if arguments[0] == ellipsis
+		ellipsis()
+	else
+		overflow: arguments
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* positions.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// helper
+/*args[i + 1] is a 'unit' ? args[i += 1] : 0*/
+-pos(type, args)
+	i = 0
+	position: unquote(type)
+	for j in (1..4)
+		if length(args) > i
+			{args[i]}: args[i += 1]
+		i += 1
+
+/*
+ * Position utility.
+ *
+ * Synopsis:
+ *
+ *   fixed: <pos> [n] <pos> [n]
+ *
+ * Examples:
+ *
+ *     fixed: top left
+ *     fixed: top 5px left
+ *     fixed: top left 5px
+ *     fixed: top 5px left 5px
+ *
+ */
+
+fixed()
+	-pos('fixed', arguments)
+
+/*
+ * Position utility.
+ *
+ * Synopsis:
+ *
+ *   absolute: <pos> [n] <pos> [n]
+ *
+ * Examples:
+ *
+ *     absolute: top left
+ *     absolute: top 5px left
+ *     absolute: top left 5px
+ *     absolute: top 5px left 5px
+ *
+ */
+
+absolute()
+	-pos('absolute', arguments)
+
+/*
+ * Position utility.
+ *
+ * Synopsis:
+ *
+ *   relative: <pos> [n] <pos> [n]
+ *
+ * Examples:
+ *
+ *     relative: top left
+ *     relative: top 5px left
+ *     relative: top left 5px
+ *     relative: top 5px left 5px
+ *
+ */
+
+relative()
+	-pos('relative', arguments)
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* reset.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based on [Eric Meyer's reset](http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/)
+
+global-reset()
+	html, body, div, span, applet, object, iframe,
+	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+	a, abbr, acronym, address, big, cite, code,
+	del, dfn, em, img, ins, kbd, q, s, samp,
+	small, strike, strong, sub, sup, tt, var,
+	dl, dt, dd, ol, ul, li,
+	fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td
+		reset-box-model()
+		reset-font()
+	body
+		reset-body()
+	ol, ul
+		list-style: none
+	table
+		reset-table()
+	caption, th, td
+		reset-table-cell()
+	a img
+		border: none
+
+nested-reset()
+	div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+	pre, a, abbr, acronym, address, code, del, dfn, em, img,
+	dl, dt, dd, ol, ul, li, fieldset, form, label,
+	legend, caption, tbody, tfoot, thead, tr
+		reset-box-model()
+		reset-font()
+	table
+		reset-table()
+	caption, th, td
+		reset-table-cell()
+	a img
+		border: none
+
+reset-box-model()
+	margin: 0
+	padding: 0
+	border: 0
+	outline: 0
+
+reset-font()
+	font-weight: inherit
+	font-style: inherit
+	font-family: inherit
+	font-size: 100%
+	vertical-align: baseline
+
+reset-body()
+	line-height: 1
+	color: black
+	background: white
+
+reset-table()
+	border-collapse: separate
+	border-spacing: 0
+	vertical-align: middle
+
+reset-table-cell()
+	text-align: left
+	font-weight: normal
+	vertical-align: middle
+
+reset-html5()
+	article, aside, canvas, details, figcaption,
+	figure, footer, header, hgroup, menu, nav,
+	section, summary, main
+		reset-box-model()
+		display: block
+	audio, canvas, video
+		display inline-block
+		/**display inline
+		*zoom 1*/
+	audio:not([controls]),[hidden]
+		display none
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* size.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Size utility.
+ * Synopsis:
+ *   size: <width> <height> | <width & height>
+ * Examples:
+ *     size: 100% 30px
+ *       yields:
+ *         width: 100%
+ *         height: 30px
+ *     size: 5px
+ *       yields:
+ *         width: 5px
+ *         height: 5px
+ */
+/*
+ 
+ improvements can be made --> use default units
+ 
+ */
+size()
+	if length(arguments) == 1
+		width: arguments[0]
+		height: arguments[0]
+	else
+		width: arguments[0]
+		height: arguments[1]
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* vendors.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+
+use('./nodes/vendor-helpers.js')
+/*@import 'config'*/
+
+/*
+ * Alias "nowrap" as "no-wrap".
+ */
+
+no-wrap = unquote('nowrap')
+
+/*
+ * Helper to find out if a given value is a width
+ */
+
+is-width(val)
+	if auto == val
+		return true
+	else if val and 'unit' == type(val)
+		// Stylus does not short circuit so we need to perform this as a distinct
+		// operation to prevent errors
+		return '' != unit(val)
+	return false
+
+/*
+ * Vendor support for the given prop / arguments, optionally specifying the
+ * only prefixes to utilize, or those which should be ignored.
+ */
+
+vendor(prop, args, only = null, ignore = null, vendor-property = true)
+	need_normalize = !vendor-property or prop in ('transition' 'transition-property' 'border-image' 'border-image-slice')
+	for prefix in vendor-prefixes
+		unless (only and !(prefix in only)) or (ignore and prefix in ignore)
+			if official == prefix
+				if need_normalize
+					{prop}: normalize(prop,('%s' % args))
+				else
+					{prop}: args
+			else
+				newprop = prop
+				newprop = '-' + prefix + '-' + prop if vendor-property
+
+				if need_normalize
+					{newprop}: normalize(prop,('%s' % args),prefix)
+				else
+					{newprop}: args
+/*
+ * Vendorize the given value.
+ */
+
+vendor-value(arg, only = null, ignore = null)
+	prop = current-property[0]
+	for prefix in vendor-prefixes
+		unless (only and !(prefix in only)) or (ignore and prefix in ignore) or official == prefix
+			add-property(prop, '-%s-%s' % (prefix arg))
+	arg
+
+/*
+ * Vendor "box-shadow" support.
+ */
+
+box-shadow()
+	vendor('box-shadow', arguments, only: webkit official)
+
+/*
+ * Vendor "user-select" support.
+ */
+
+user-select()
+	vendor('user-select', arguments, only: webkit moz ms official)
+
+/*
+ * Vendor "column-count" support.
+ */
+
+column-count()
+	vendor('column-count', arguments, only: webkit moz official)
+
+/*
+ * Vendor "column-gap" support.
+ */
+
+column-gap()
+	vendor('column-gap', arguments, only: webkit moz official)
+
+/*
+ * Vendor "column-rule" support.
+ */
+
+column-rule()
+	vendor('column-rule', arguments, only: webkit moz official)
+
+/*
+ * Vendor "column-rule-color" support.
+ */
+
+column-rule-color()
+	vendor('column-rule-color', arguments, only: webkit moz official)
+
+/*
+ * Vendor "column-rule-width" support.
+ */
+
+column-rule-width()
+	vendor('column-rule-width', arguments, only: webkit moz official)
+
+/*
+ * Vendor "column-rule-style" support.
+ */
+
+column-rule-style()
+	vendor('column-rule-style', arguments, only: webkit moz official)
+
+/*
+ * Vendor "column-width" support.
+ */
+
+column-width()
+	vendor('column-width', arguments, only: webkit moz official)
+
+/*
+ * Vendor "column-span" support.
+ */
+
+column-span()
+	vendor('column-span', arguments, only: webkit official)
+
+/*
+ * Vendor "column-fill" support.
+ */
+
+column-fill()
+	vendor('column-fill', arguments, only: moz)
+
+/*
+ * Legacy syntax support for background-clip and background-origin
+ */
+
+legacy-bg-values(property, args)
+	legacy_args = ()
+	importance = unquote('')
+	for subargs in args
+		for arg in subargs
+			if arg in (border-box padding-box content-box)
+				arg = unquote('border')  if arg == border-box
+				arg = unquote('padding') if arg == padding-box
+				arg = unquote('content') if arg == content-box
+			if arg != '!important'
+				push(legacy_args,arg)
+			else
+				importance = !important
+	vendor(property, unquote(join(', ',legacy_args)) importance, only: moz webkit)
+
+/*
+ * Vendor "background-clip" support.
+ */
+
+background-clip()
+	if arguments[0] == text
+		vendor('background-clip', arguments, only: webkit)
+	else
+		legacy-bg-values('background-clip', arguments)
+		background-clip: arguments
+
+/*
+ * Vendor "background-origin" support.
+ */
+
+background-origin()
+	legacy-bg-values('background-origin', arguments)
+	background-origin: arguments
+
+/*
+ * Vendor "background-size" support.
+ */
+
+background-size()
+	vendor('background-size', arguments, only: webkit moz official)
+
+/*
+ * Vendor "transform" support.
+ */
+
+transform()
+	vendor('transform', arguments)
+
+/*
+ * Vendor "transform-origin" support.
+ */
+transform-origin()
+	vendor('transform-origin', arguments)
+
+/*
+ * Vendor "transform-style" support.
+ */
+
+transform-style()
+	vendor('transform-style', arguments)
+
+/*
+ * Vendor "border-image" support.
+ */
+
+border-image()
+	vendor('border-image', arguments, only: webkit moz o official)
+
+/*
+ * Vendor "transition" support.
+ */
+
+transition()
+	vendor('transition', arguments, only: webkit moz o official)
+
+/*
+ * Vendor "transition-property" support.
+ */
+
+transition-property()
+	vendor('transition-property', arguments)
+
+/*
+ * Vendor "transition-duration" support.
+ */
+
+transition-duration()
+	vendor('transition-duration', arguments)
+
+/*
+ * Vendor "transition-timing-function" support.
+ */
+
+transition-timing-function()
+	vendor('transition-timing-function', arguments)
+
+/*
+ * Vendor "transition-delay" support.
+ */
+
+transition-delay()
+	vendor('transition-delay', arguments)
+
+/*
+ * Vendor "backface-visibility" support.
+ */
+
+backface-visibility()
+	vendor('backface-visibility', arguments, only: webkit moz ms official)
+
+/*
+ * Vendor "perspective" support.
+ */
+
+perspective()
+	if mixin
+		vendor('perspective', arguments, only: webkit moz ms official)
+	else
+		'perspective(%s)' % arguments
+
+/*
+ * Vendor "perspective-origin" support.
+ */
+
+perspective-origin()
+	vendor('perspective-origin', arguments, only: webkit moz ms official)
+
+/*filter()
+	vendor('filter', arguments, only: webkit moz o ms official)*/
+	
+/*
+ * Opacity with conditional IE support.
+ */
+
+/*if support-for-ie
+	if n == inherit or n == initial
+		-ms-filter: n args
+		filter: n args
+	else
+		val = round(n * 100)
+		if val == 100
+			-ms-filter: none args
+			filter: none args
+		else
+			-ms-filter: '"progid:DXImageTransform.Microsoft.Alpha(Opacity=%s)"' % val args
+			filter: 'alpha(opacity=%s)' % val args
+*/
+opacity(n, args...)
+	if !unit(n)
+		opacity: n args
+
+/*
+ * Vendor "text-size-adjust"
+ */
+/*
+
+text-size-adjust()
+	vendor('text-size-adjust', arguments)
+*/
+
+/*
+ * Alias the "white-space" property.
+ */
+
+whitespace()
+	white-space: arguments
+
+/*
+ * Vendor "box-sizing" support.
+ */
+
+box-sizing()
+	vendor('box-sizing', arguments, only: webkit moz official)
+
+/*
+ * Vendor "box-orient" support.
+ */
+
+box-orient()
+	vendor('box-orient', arguments, only: webkit moz official)
+
+/*
+ * Vendor "box-flex-group" support.
+ */
+
+box-flex-group()
+	vendor('box-flex-group', arguments, only: webkit moz official)
+
+/*
+ * Vendor "box-ordinal-group" support.
+ */
+
+box-ordinal-group()
+	vendor('box-ordinal-group', arguments, only: webkit moz ms official)
+
+
+/*
+ * Vendor "box-align" support.
+ */
+
+box-align()
+	vendor('box-align', arguments, only: webkit moz ms official)
+
+/*
+ * Vendor "box-pack" support.
+ */
+
+box-pack()
+	vendor('box-pack', arguments, only: webkit moz ms official)
+
+/*
+ * Vendor "box-direction" support.
+ */
+
+box-direction()
+	vendor('box-direction', arguments, only: webkit moz ms official)
+
+/*
+ * Vendor "animation" support.
+ */
+
+animation()
+	vendor('animation', arguments)
+
+
+/*
+ * Vendor "animation-name" support.
+ */
+
+animation-name()
+	vendor('animation-name', arguments)
+
+/*
+ * Vendor "animation-duration" support.
+ */
+
+animation-duration()
+	vendor('animation-duration', arguments)
+
+/*
+ * Vendor "animation-delay" support.
+ */
+
+animation-delay()
+	vendor('animation-delay', arguments)
+
+/*
+ * Vendor "animation-direction" support.
+ */
+
+animation-direction()
+	vendor('animation-direction', arguments)
+
+/*
+ * Vendor "animation-iteration-count" support.
+ */
+
+animation-iteration-count()
+	vendor('animation-iteration-count', arguments)
+
+/*
+ * Vendor "animation-timing-function" support.
+ */
+
+animation-timing-function()
+	vendor('animation-timing-function', arguments)
+
+/*
+ * Vendor "animation-play-state" support.
+ */
+
+animation-play-state()
+	vendor('animation-play-state', arguments)
+
+/*
+ * Vendor "animation-fill-mode" support.
+ */
+
+animation-fill-mode()
+	vendor('animation-fill-mode', arguments)
+
+/*
+ * Vendor "hyphens" support.
+ */
+
+hyphens()
+	vendor('hyphens', arguments, only: webkit moz ms official)
+
+/*
+ * Vendor "appearance" support.
+ */
+
+appearance()
+	vendor('appearance', arguments, only: webkit moz official)
+
+/*
+ * Vendor "tab-size" support.
+ */
+
+tab-size()
+	vendor('tab-size', arguments, only: moz o official)
+
+/*
+ * Vendor "overflow-scrolling" support.
+ */
+
+overflow-scrolling()
+	vendor('overflow-scrolling', arguments, only: webkit official)
+
+/*
+ * Vendor "text-overflow" support, , -o- for opera 9.* - 10.*
+ */
+
+text-overflow()
+	vendor('text-overflow', arguments, only: official o)
+
+/*
+ * Vendor "text-size-adjust" support.
+ */
+text-size-adjust()
+	vendor('text-size-adjust', arguments, only: official webkit ms)
+
+/*
+ * Vendor "font-smoothing" support, webkit only.
+ */
+font-smoothing()
+	vendor('font-smoothing', arguments, only: webkit)
+
+
+/**
+ * Vendor input-placeholder/placeholder support.
+ *
+ * Examples:
+ *    // Default syntax
+ *    body
+ *      placeholder(color #333, font-weight normal)
+ *
+ *    // The comma is important
+ *    .placeholder-red
+ *      placeholder(color red,)
+ *
+ *    // We can pass a function
+ *    green-placeholder()
+ *      color green
+ *    .placeholder-green
+ *      placeholder(green-placeholder)
+ *
+ *    // We can pass a hash
+ *    textarea
+ *      placeholder((font-style italic) (font-weight bold) (padding '4px 10px'))
+ */
+placeholder()
+	for v in ':-webkit-input' '-moz' ':-moz' '-ms-input'
+		&:{v}-placeholder
+			for pair in arguments
+				if typeof(pair) == 'function'
+					pair()
+				else if pair is not null and pair[0] is not null
+					{pair[0]}: type(pair[1]) == 'string' ? s(pair[1]) : pair[1]
+input-placeholder = placeholder
+
+/*
+ * Vendor background support (gradients).
+ */
+
+background()
+	if match('-gradient\(', ''+arguments)
+		vendor('background', arguments, vendor-property: false)
+	else
+		background arguments
+
+background-image()
+	if match('-gradient\(', ''+arguments)
+		vendor('background-image', arguments, vendor-property: false)
+	else
+		background-image arguments
+
+cursor()
+	if match('-gradient\(', ''+arguments)
+		vendor('cursor', arguments, vendor-property: false)
+	else
+		cursor arguments
+
+list-style()
+	if match('-gradient\(', ''+arguments)
+		vendor('list-style', arguments, vendor-property: false)
+	else
+		list-style arguments
+
+list-style-image()
+	if match('-gradient\(', ''+arguments)
+		vendor('list-style-image', arguments, vendor-property: false)
+	else
+		list-style-image arguments
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* text/aliases.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Alias of "nowrap".
+ */
+no-wrap = unquote('nowrap')
+/*
+ * Alias of "white-space".
+ */
+whitespace()
+	white-space: arguments
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* text/ellipsis.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Ellipsis with wrapping disabled by default.
+ */
+
+ellipsis(no-wrap = true)
+	if no-wrap
+		white-space: nowrap
+	overflow: hidden
+	text-overflow: ellipsis
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* text/hide-text.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Hide text.
+ */
+
+hide-text()
+	text-indent: 101%
+	white-space: nowrap
+	overflow: hidden
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* text/replace-text.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/*
+ * Replace text with an image.
+ */
+
+replace-text(image, x=50%, y=50%)
+	hide-text()
+	background-image image
+	background-repeat no-repeat
+	background-position x y
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* text/shadow-stroke.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+shadow-stroke($n,$c)
+	$neg = -($n)
+	text-shadow: $neg $neg 0 $c, $n $neg 0 $c, $neg $n 0 $c, $n $n 0 $c
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/base.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-base()
+	html // Prevent iOS text size adjust after orientation change.
+		font-family sans-serif
+		-ms-text-size-adjust 100%
+		-webkit-text-size-adjust 100%
+	body
+		margin 0
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/embed.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-embed()
+	img // No border when inside `a` in IE 8~10.
+		border 0
+
+	svg:not(:root) // Overflow should be hidden in IE 9~11.
+		overflow hidden
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/forms.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-forms()
+	// Known limitation: Chrome and Safari on OS X allow very limited
+	// styling of `select`, unless a `border` property is set.
+	button, input, optgroup, select, textarea
+		color  inherit // Correct color not being inherited.
+		font   inherit // Correct font properties not being inherited.
+		margin 0 // Fix margins in FF 4+, Safari, and Chrome.
+
+	button // Fix `overflow` set to `hidden` in IE 8/9/10/11.
+		overflow visible
+
+	button, select // Consistent text-transform across browsers.
+		text-transform none
+
+	// Fix WebKit bug in Android 4.0, inability to style clickable `input` in
+	// iOS and improve usability and consistency of cursor style.
+	button, html input[type='button'], input[type='reset'], input[type='submit']
+		cursor pointer
+		-webkit-appearance button
+
+	// Reset default cursor for disabled elements.
+	button[disabled], html input[disabled]
+		cursor default
+
+	// Remove inner padding and border in FF 4+.
+	button::-moz-focus-inner, input::-moz-focus-inner
+		border  0
+		padding 0
+
+	input // Reset line-height again FF 4+ UA stylsheet.
+		line-height normal
+
+	// Fix box sizing and excess padding in IE 8~10
+	input[type='checkbox'], input[type='radio']
+		box-sizing border-box
+		padding    0
+
+	// Fix the cursor style for Chrome's increment/decrement buttons.
+	input[type='number']::-webkit-inner-spin-button,
+	input[type='number']::-webkit-outer-spin-button
+		height auto
+
+	// Consistent appearance and box-sizing in Safari and Chrome.
+	input[type='search']
+		-webkit-appearance  textfield
+		-moz-box-sizing     content-box
+		-webkit-box-sizing  content-box
+		box-sizing          content-box
+
+	// No inner padding and search cancel button in Safari and Chrome on OS X.
+	input[type='search']::-webkit-search-cancel-button,
+	input[type='search']::-webkit-search-decoration
+		-webkit-appearance none
+
+	fieldset // Consistent border, margin, and padding.
+		border  1px solid #c0c0c0
+		margin  0 2px
+		padding 0.35em 0.625em 0.75em
+
+	legend // Hack to correct `color` not being inherited in IE 8/9/10/11.
+		border  0
+		padding 0
+
+	textarea // Remove default vertical scrollbar in IE 8~11.
+		overflow auto
+
+	optgroup // Don't inherit the `font-weight` applied above.
+		font-weight bold
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/groups.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-groups()
+	figure // Margin should exist in IE 8~9 / Safari.
+		margin 1em 40px
+
+	hr // Consistency between FF and others.
+		-moz-box-sizing content-box
+		box-sizing      content-box
+		height          0
+
+	pre // Contain overflow and wrap words.
+		overflow auto
+
+	// Hack to fix odd `em`-unit font size rendering in all browsers.
+	code, kbd, pre, samp
+		font-family monospace, monospace
+		font-size   1em
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/html5.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-html5()
+	// `block` display for HTML5 elements in IE 8~11 and FF.
+	article, details, section, summary,
+	aside, main, menu, nav, figcaption,
+	figure, footer, header, hgroup
+		display block
+
+	audio, canvas, progress, video
+		display inline-block // Set `inline-block` not defined in IE 8~9.
+		vertical-align  baseline // Fix v-align of `progress` in Chrome, FF, and O.
+
+	audio:not([controls])
+		display none // Prevent displaying `audio` without controls.
+		height  0 // Remove excess height in iOS 5 devices.
+
+	[hidden], // Address `[hidden]` styling not present in IE 8~10.
+	template  // Hide the `template` element in IE 8~11, Safari, and FF < 22.
+		display none
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/links.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-links()
+	a // No gray bg color in active links in IE 10.
+		background-color transparent
+		&:active, &:hover
+			outline 0 // + readability when focused.
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/tables.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-tables()
+	table // Remove most spacing between table cells.
+		border-collapse collapse
+		border-spacing  0
+	td, th
+		padding 0
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* normalize/text.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+// Based in Nicolas Gallagher's git.io/normalize
+normalize-text()
+	abbr[title] // + style not present in IE 8~11, Safari, and Chrome.
+		border-bottom 1px dotted
+
+	dfn // + style not present in Safari and Chrome.
+		font-style italic
+
+	mark // + style not present in IE 8/9.
+		background #ff0; color #000
+
+	b, strong // Fix `font-weight: bolder` in FF 4+, Safari, and Chrome.
+		font-weight bold
+
+	h1 // `h1` inside `section` and `article` fix for FF 4+, Safari & Chrome.
+		font-size 2em
+		margin    0.67em 0
+
+	small // Consistent font-size across browsers.
+		font-size 80%
+
+	sub, sup // Prevent `sub` and `sup` affecting `line-height`.
+		font-size       75%
+		line-height     0
+		position        relative
+		vertical-align  baseline
+	sup
+		top -0.5em
+	sub
+		bottom  -0.25em
+
+
+
+
+
+
+/* CUSTOM FUNCTIONS */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* customFunctions.styl */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+
+
+/* FONTS */
+//$font_template = { replacements: '', thin: '', extralight: '', light: '', regular: '', medium: '', semibold: '', bold: '', extrabold: '', black: '', }
+$font_cache = {
+	'1': { replacements: '', thin: '', extralight: '', light: '', regular: '', medium: '', semibold: '', bold: '', extrabold: '', black: '', },
+	'2': { replacements: '', thin: '', extralight: '', light: '', regular: '', medium: '', semibold: '', bold: '', extrabold: '', black: '', },
+	'3': { replacements: '', thin: '', extralight: '', light: '', regular: '', medium: '', semibold: '', bold: '', extrabold: '', black: '', },
+	'4': { replacements: '', thin: '', extralight: '', light: '', regular: '', medium: '', semibold: '', bold: '', extrabold: '', black: '', },
+}
+$fontweight_cache = {
+	'1': { thin: 0, extralight: 0, light: 0, regular: 0, medium: 0, semibold: 0, bold: 0, extrabold: 0, black: 0, },
+	'2': { thin: 0, extralight: 0, light: 0, regular: 0, medium: 0, semibold: 0, bold: 0, extrabold: 0, black: 0, },
+	'3': { thin: 0, extralight: 0, light: 0, regular: 0, medium: 0, semibold: 0, bold: 0, extrabold: 0, black: 0, },
+	'4': { thin: 0, extralight: 0, light: 0, regular: 0, medium: 0, semibold: 0, bold: 0, extrabold: 0, black: 0, },
+}
+
+/* VARIABLES */
+validFontStyle = fsnormal normal italic oblique
+validFontVariant = small-caps titling-caps sub super unicase petite-caps all-petite-caps all-small-caps fvnone
+validTextAlign = left right center justify
+validTextTransform = uppercase lowercase capitalize full-width ttnone
+validTextDecoration = underline overline line-through tdnone
+validFontWeight = 100 200 300 400 500 600 700 800 900 lighter bold bolder fwnormal
+validColor = 'rgb' 'rgba' 'hsl' 'hsla' 'hex' transparent currentcolor black silver gray white maroon red purple fuchsia green lime olive yellow navy blue teal aqua orange aliceblue antiquewhite aquamarine azure beige bisque blanchedalmond blueviolet brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan aqua darkblue darkcyan darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange darkorchid darkred darksalmon darkseagreen darkslateblue darkslategray darkslategrey darkturquoise darkviolet deeppink deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite forestgreen gainsboro ghostwhite gold goldenrod greenyellow grey honeydew hotpink indianred indigo ivory khaki lavender lavenderblush lawngreen lemonchiffon lightblue lightcoral lightcyan lightgoldenrodyellow lightgray lightgreen lightgrey lightpink lightsalmon lightseagreen lightskyblue lightslategray lightslategrey lightsteelblue lightyellow limegreen linen magenta fuchsia mediumaquamarine mediumblue mediumorchid mediumpurple mediumseagreen mediumslateblue mediumspringgreen mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin navajowhite oldlace olivedrab orangered orchid palegoldenrod palegreen paleturquoise palevioletred papayawhip peachpuff peru pink plum powderblue rosybrown royalblue saddlebrown salmon sandybrown seagreen seashell sienna skyblue slateblue slategray slategrey snow springgreen steelblue tan thistle tomato turquoise violet wheat whitesmoke yellowgreen rebeccapurple
+invalidAllowedValues = fsnormal fvnone ttnone tdnone wwnormal wbnormal wsnormal fwnormal
+/*validFonts = 'thin lighter light regular medium semibold bold bolder black'*/
+validWordWrap = wwnormal break-word
+validWordBreak = wbnormal break-all keep-all
+validWhiteSpace = wsnormal nowrap pre pre-line pre-wrap
+/*
+ADD word-wrap, word-break, white-space, word-spacing
+*/
+
+
+$primary-color = #000
+$facebook = #3B5998
+$twitter = #00ACED
+$gplus = #D34836
+$instagram = #BC2A8D
+$youtube = #E52D27
+
+
+
+set-font($type, $font, $fontweight = 0)
+	search-font($type, $font, 'set', $fontweight)
+
+search-font($type, $font = '', $get = 'get', $fontweight = 0)
+	if !match('2|3|4', $type)
+		if $get == 'get'
+			return ($font_cache['1'][$type] $font_cache['1'][replacements])
+		else
+			$font_cache['1'][$type] = $font
+			if $fontweight in validFontWeight and (($fontweight is a 'unit' and !unit($fontweight)) or typeof($fontweight) == 'ident')
+				$fontweight_cache['1'][$type] = $fontweight
+	else
+		if match('2', $type)
+			if $get == 'get'
+				return ($font_cache['2'][replace('2','',$type)] $font_cache['2'][replacements])
+			else
+				$font_cache['2'][replace('2','',$type)] = $font
+				if $fontweight in validFontWeight and (($fontweight is a 'unit' and !unit($fontweight)) or typeof($fontweight) == 'ident')
+					$fontweight_cache['2'][replace('2','',$type)] = $fontweight
+		if match('3', $type)
+			if $get == 'get'
+				return ($font_cache['3'][replace('3','',$type)] $font_cache['3'][replacements])
+			else
+				$font_cache['3'][replace('3','',$type)] = $font
+				if $fontweight in validFontWeight and (($fontweight is a 'unit' and !unit($fontweight)) or typeof($fontweight) == 'ident')
+					$fontweight_cache['3'][replace('3','',$type)] = $fontweight
+		if match('4', $type)
+			if $get == 'get'
+				return ($font_cache['4'][replace('4','',$type)] $font_cache['4'][replacements])
+			else
+				$font_cache['4'][replace('4','',$type)] = $font
+				if $fontweight in validFontWeight and (($fontweight is a 'unit' and !unit($fontweight)) or typeof($fontweight) == 'ident')
+					$fontweight_cache['4'][replace('4','',$type)] = $fontweight
+			
+writeFontWeight($type)
+	$fw = 0
+	if !match('2|3|4', $type)
+		$fw = $fontweight_cache['1'][$type]
+	else
+		if match('2', $type)
+			$fw = $fontweight_cache['2'][replace('2','',$type)]
+		if match('3', $type)
+			$fw = $fontweight_cache['3'][replace('3','',$type)]
+		if match('4', $type)
+			$fw = $fontweight_cache['4'][replace('4','',$type)]
+		
+	if $fw in validFontWeight and (($fw is a 'unit' and !unit($fw)) or typeof($fw) == 'ident')
+		$fw = $fw
+	else
+		$fw = 'false'
+		
+	return $fw
+	
+writeFont($type, $inline=0)
+	$get = search-font($type)
+	$fw = writeFontWeight($type)
+	if $get[0] != ''
+		if $inline
+			if $get[1] != ''
+				font-family $get[0], $get[1]
+				font-weight $fw unless $fw == 'false'
+			else
+				font-family $get[0]
+				font-weight $fw unless $fw == 'false'
+		else
+			.{$type}
+				if $get[1] != ''
+					font-family $get[0], $get[1]!important
+					font-weight $fw unless $fw == 'false'
+				else
+					font-family $get[0]!important
+					font-weight $fw unless $fw == 'false'
+					
+existingFont($name, $type, $fontweight = 0)
+	set-font($type, $name, $fontweight)
+					
+regFont($name, $type, $sourcePath = '../fonts/*', $extensions = 'woff2' 'woff', $write_mode = true)
+	set-font($type, $name)
+	if $write_mode
+		@font-face
+			font-family $name
+			$fullPath = ''
+			for $extension in $extensions
+				$extension1 = $extension
+				$extension1 = "ttf" unless $extension != "truetype"
+				$extension = "embedded-opentype" unless $extension != "eot"
+				$fullPath += 'url("' + $sourcePath + '.' + $extension1 + '") format("' + $extension + '")'
+				unless $extension == $extensions[length($extensions)-1]
+					$fullPath += ', '
+			src unquote($fullPath)
+			font-weight normal
+			font-style normal
+
+regOtherFonts($replacements, $fontLevel = '1')
+	$font_cache[$fontLevel][replacements] = unquote($replacements)
+	if $fontLevel == '1'
+		$font_cache['2'][replacements] = unquote($replacements) unless $font_cache['2'][replacements] != ''
+		$font_cache['3'][replacements] = unquote($replacements) unless $font_cache['3'][replacements] != ''
+		$font_cache['4'][replacements] = unquote($replacements) unless $font_cache['4'][replacements] != ''
+	if $fontLevel == '2'
+		$font_cache['3'][replacements] = unquote($replacements) unless $font_cache['3'][replacements] != ''
+		$font_cache['4'][replacements] = unquote($replacements) unless $font_cache['4'][replacements] != ''
+	if $fontLevel == '3'
+		$font_cache['4'][replacements] = unquote($replacements) unless $font_cache['4'][replacements] != ''
+
+/*regFont($name = '', $sourcePath = '../fonts!*', $extensions = 'woff2' 'woff')
+	@font-face 
+		font-family $name
+		$fullPath = ''
+		for extension in $extensions
+			$fullPath += 'url("' + $sourcePath + '.' + extension + '") format("' + extension + '")'
+			unless extension == $extensions[length($extensions)-1]
+				$fullPath += ', '
+		src unquote($fullPath)
+		font-weight normal
+		font-style normal*/
+
+
+/* CACHE MEDIA QUERIES */
+
+if $importedFunctions == true
+	//$query_cache = $query_cache
+else
+	$query_cache = {}
+
+$query_aliases = {
+	mobileS: 	'min-width: 320px',/* 320x480 */
+	mobileM: 	'min-width: 360px',/* 360x640 */
+	mobileLS:	'min-width: 480px',/* 480x320 */
+	tablet: 	'min-width: 720px',/* 720x1024 */
+	tabletL: 	'min-width: 768px',/* 768x1024 */
+	laptopS:	'min-width: 1024px',/* 1024x720 */
+	HD:			'min-width: 1280px',/* 1280x768 */
+	laptopM:	'min-width: 1366px',/* 1366x768 */
+	laptopL:	'min-width: 1440px',/* 1440x900 */
+	FHD:		'min-width: 1920px',/* 1920x1080 */
+	F4K: 		'min-width: 2160px',/* 2160x1440 */
+}
+
+containers($first, $options, $center = false)
+	if $center
+		//display block unless @display
+		margin 0 auto unless @margin
+		position relative unless @position
+		z-index 1 unless @z-index
+	max-width defaultUnit($first) unless @max-width or $first is null
+	&.flex
+		display flex
+	for $pair in $options
+		$pair0 = defaultUnit($pair[0])
+		$pair1 = defaultUnit($pair[1])
+		+media($pair0)
+			max-width $pair1
+
+
+media-helper($condition, $selector)
+	if $condition is a 'unit'
+		if !unit($condition)
+			$condition = unit($condition, 'px')
+		$condition = 'min-width: ' + $condition
+	$condition = unquote($query_aliases[$condition] or $condition)
+	$condition = '(%s)' % $condition unless match('\(', $condition)
+	unless $query_cache[$condition]
+		$query_cache[$condition] = {}
+	unless $query_cache[$condition][$selector]
+		$query_cache[$condition][$selector] = ()
+	push($query_cache[$condition][$selector], block)
+	
+media($condition)
+	+media-helper($condition, selector() + "")
+		{block}
+		
+apply_media_cache()
+	for $query, $selectors in $query_cache
+		$query = unquote($query_aliases[$query] or $query)
+		$query = '(%s)' % $query unless match('\(', $query)
+		$query = 'only screen and %s' % $query
+		@media $query
+			for $selector, $block in $selectors
+				{$selector}
+					for $property in $block
+						{$property}
+						
+/* CROSS BROWSER FUNCTIONS */
+/*
+CONFIG = support-for-ie
+*/
+$flexRatio = {
+	zero:   0,
+	one: 	1,
+	two: 	2,
+	three: 	3,
+	four: 	4,
+	five: 	5,
+	six: 	6,
+	seven: 	7,
+	eight: 	8,
+	nine: 	9,
+	ten: 	10,
+	eleven:	11,
+	twelve:	12,
+}
+$flexCol = {
+	zero:   0px,
+	one: 	round(unit(100 / 1, '%'), 4),
+	two: 	round(unit(100 / 2, '%'), 4),
+	three: 	round(unit(100 / 3, '%'), 4),
+	four: 	round(unit(100 / 4, '%'), 4),
+	five: 	round(unit(100 / 5, '%'), 4),
+	six: 	round(unit(100 / 6, '%'), 4),
+	seven: 	round(unit(100 / 7, '%'), 4),
+	eight: 	round(unit(100 / 8, '%'), 4),
+	nine: 	round(unit(100 / 9, '%'), 4),
+	ten: 	round(unit(100 / 10, '%'), 4),
+	eleven:	round(unit(100 / 11, '%'), 4),
+	twelve:	round(unit(100 / 12, '%'), 4),
+}
+/*
+ improvements can be made
+ if support-for-ie
+	max-width unquote( 'calc(' + $resolved_basis + ' - 4px)\9' ) unless $resolved_basis is a 'literal'
+*/
+flexible($basis, $space = null, $grow = 1, $shrink = 1)
+	$resolved_basis = null
+	
+	if $basis is a 'string'
+		$resolved_basis = unquote($basis)
+	
+	$resolved_basis = $flexCol[$basis] or $basis
+	
+	if $resolved_basis == $flexCol[$basis] and $flexRatio[$basis] != 1 and $space is a 'unit'
+		$ratio = $flexRatio[$basis]
+		$space = defaultUnit(round((($space*($ratio - 1)) / $ratio), 2))
+		$resolved_basis = unquote('calc(' + $resolved_basis + ' - ' + $space + ')')
+		
+	if ($space is not 'unit' and $space == true) or $grow == '!'
+		$grow = 1
+		flex $grow $shrink $resolved_basis!important
+		max-width $resolved_basis!important
+	else
+		flex $grow $shrink $resolved_basis
+		max-width $resolved_basis
+		
+	
+	
+simplify($measure, $screenWidth, $valUnit = '%')
+	$result = ((($measure) * 100) / ($screenWidth))
+	$result = round(unit($result, unquote($valUnit)), 4)
+	return $result
+
+proportional($_1, $_2, $_3, $valUnit = 'px')
+	$result = ((($_1) / ($_2)) * ($_3))
+	if $valUnit == '%'
+		$result = simplify($result, $_3)
+	if $valUnit == 'px'
+		$result = floor(unit($result, 'px'))
+	
+	return $result
+
+simpleCalc($measure, $screenWidth)
+	return unquote('calc((('+unit($measure,'%')+')*100)/('+$screenWidth+'))')
+
+	
+unfocus($value)
+	$value = unit($value, 'px')
+	-webkit-filter blur($value)
+	-moz-filter blur($value)
+	-ms-filter blur($value)
+	-o-filter blur($value)
+	filter blur($value)
+	
+/*
+SUPPORT FOR IE 10? IE11 IS OK --> rule out IE9...
+
+	if support-for-ie
+		display unquote('table\9')
+		.column
+			width 100%
+			if support-for-ie
+				display unquote('inline-block\9')
+				vertical-align unquote('top\9')
+*/
+
+
+// todo: set default order on media cache variable instead of this hammer fix
+mediaFix()
+	body
+		+media(320)
+			/* */
+		+media(360)
+			/* */
+		+media(480)
+			/* */
+		+media(640)
+			/* */
+		+media(720)
+			/* */
+		+media(768)
+			/* */
+		+media(960)
+			/* */
+		+media(1024)
+			/* */
+		+media(1280)
+			/* */
+		+media(1366)
+			/* */
+		+media(1440)
+			/* */
+		+media(1600)
+			/* */
+		+media(1920)
+			/* */
+		+media(2160)
+			/* */
+custom-reset()
+	mediaFix()
+	.flex
+		width 100%
+		display flex
+		flex-flow row wrap
+		align-items flex-start
+		justify-content space-between
+		&.one > .column
+			flexible(one)
+		&.two > .column
+			flexible(two)
+		&.three > .column
+			flexible(three)
+		&.four > .column
+			flexible(four)
+		&.five > .column
+			flexible(five)
+		&.six > .column
+			flexible(six)
+		&.seven > .column
+			flexible(seven)
+		&.eight > .column
+			flexible(eight)
+		&.nine > .column
+			flexible(nine)
+		&.ten > .column
+			flexible(ten)
+	*
+		margin 0
+		padding 0
+		border 0
+		outline none
+		box-sizing border-box
+		-webkit-tap-highlight-color transparent
+		-webkit-smoothing antialiased
+		-moz-osx-smoothing grayscale
+		text-size-adjust 100%
+		font-variant-ligatures: none;
+		-webkit-font-variant-ligatures: none;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	*:before, *:after
+		box-sizing border-box
+	h1, h2, h3, h4, h5, h6
+		font-weight normal
+	img
+		display block
+		max-width 100%
+	a
+		text-decoration none
+	a, a:hover, a span
+		cursor pointer
+	ul, li
+		list-style none
+	html, body
+		width 100%
+		min-height 100%
+	writeFont('thin', 0)
+	writeFont('extralight', 0)
+	writeFont('light', 0)
+	writeFont('regular', 0)
+	writeFont('medium', 0)
+	writeFont('semibold', 0)
+	writeFont('bold', 0)
+	writeFont('extrabold', 0)
+	writeFont('black', 0)
+	writeFont('thin2', 0)
+	writeFont('extralight2', 0)
+	writeFont('light2', 0)
+	writeFont('regular2', 0)
+	writeFont('medium2', 0)
+	writeFont('semibold2', 0)
+	writeFont('bold2', 0)
+	writeFont('extrabold2', 0)
+	writeFont('black2', 0)
+	body
+		width 100%
+		position relative
+		background-color #fff
+		f 1rem, 1em, left normal $primary-color 'regular'
+	section, header, footer
+		writeFont('regular', 1)
+		position relative
+		z-index 1
+	input[type="number"]
+		-moz-appearance textfield!important
+		&::-webkit-inner-spin-button, &::-webkit-outer-spin-button
+			appearance none!important
+
+t()
+	if arguments is not null
+		for $option, $index in arguments
+			if $option in validTextAlign
+				text-align $option
+				return true
+			if $option in validTextTransform
+				if $option in invalidAllowedValues
+					text-transform none
+				else
+					text-transform $option
+				return true
+			if $option in validTextDecoration
+				if $option in invalidAllowedValues
+					text-decoration none
+				else
+					text-decoration $option
+				return true
+			if $option in validFontStyle
+				if $option in invalidAllowedValues
+					font-style normal
+				else
+					font-style $option
+				return true
+			if $option in validFontVariant
+				if $option in invalidAllowedValues
+					font-variant none
+				else
+					font-variant $option
+				return true
+			if $option in validWordWrap
+				if $option in invalidAllowedValues
+					word-wrap normal
+				else
+					word-wrap $option
+				return true
+			if $option in validWordBreak
+				if $option in invalidAllowedValues
+					word-break normal
+				else
+					word-break $option
+				return true
+			if $option in validWhiteSpace
+				if $option in invalidAllowedValues
+					white-space normal
+				else
+					white-space $option
+				return true
+			if $option in validFontWeight and (($option is a 'unit' and !unit($option)) or typeof($option) == 'ident')
+				if $option in invalidAllowedValues
+					font-weight normal
+				else
+					font-weight $option
+				return true
+			if $option is a 'unit' and unit($option)
+				letter-spacing $option
+				return true
+			if $option in validColor or typeof($option) in validColor
+				color $option
+				return true
+			if $option is a 'string'
+				writeFont($option, 1)
+
+
+fixLineHeightSafari($h, $opt = false, $lh = false)
+	line-height 0 unless $lh == false
+	&:after
+		content ''
+		height $h
+		display inline-block
+		vertical-align middle
+		for $pair in $options
+			$pair0 = defaultUnit($pair[0])
+			$pair1 = defaultUnit($pair[1])
+			+media($pair0)
+				height $pair1
+		
+		
+f()
+	if arguments[0] is a 'unit' and arguments[1] is a 'unit'
+		txt(arguments[0], arguments[1], arguments[2])
+	else
+		t(arguments)
+		
+txt($fz = null, $lh = null, $opts = null)
+	font-size defaultUnit($fz) unless $fz is null
+	line-height defaultUnit($lh) unless $lh is null
+	t($opts) unless $opts is null
+
+-space(type, args)
+	i = 0
+	type = unquote(type)
+	validPositions = top right bottom left
+	if args[0] in validPositions
+		if length(args) == 8
+			$getTop = 0
+			$getRight = 0
+			$getBottom = 0
+			$getLeft = 0
+			for arg in args
+				if arg in validPositions
+					if arg == validPositions[0]
+						$getTop = args [ index(args, arg) + 1 ]
+					if arg == validPositions[1]
+						$getRight = args [ index(args, arg) + 1 ]
+					if arg == validPositions[2]
+						$getBottom = args [ index(args, arg) + 1 ]
+					if arg == validPositions[3]
+						$getLeft = args [ index(args, arg) + 1 ]
+			if $getLeft == $getRight and $getTop != $getBottom
+				{type}: $getTop $getRight $getBottom
+			else 
+				if $getLeft == $getRight and $getTop == $getBottom
+					{type}: $getTop $getRight
+				else
+					{type}: $getTop $getRight $getBottom $getLeft
+				
+		else
+			for j in (1..8)
+				if length(args) > i
+					{type}-{args[i]}: (args[i + 1] is a 'unit' or args[i + 1] is a 'ident' or args[i + 1] is a 'literal') ? args[i += 1] : 0
+				i += 1
+	else 
+		{type}: args
+
+		
+margin()
+	-space('margin', arguments)
+padding()
+	-space('padding', arguments)
+-m()
+	-space('margin', arguments)
+-p()
+	-space('padding', arguments)
+	
+	
+defaultTransition($time = .2s, $animation = ease-in-out, $delay = 0s)
+	transition all $time $animation $delay
+
+defaultUnit($measure, $unit = 'px')
+	if !unit($measure)
+		return unit($measure, $unit)
+
+	return $measure
+		

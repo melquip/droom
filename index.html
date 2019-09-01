@@ -4,10 +4,165 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
-	<link rel="stylesheet" href="css/main.css">
+	<title>Droom - Your career dreams delivered</title>
+	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+	<link rel="icon" href="./favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="./css/main.css">
+	<script defer src="./js/jquery-3.4.1.min.js"></script>
+	<script defer src="./js/liveParallax.js"></script>
+	<script defer src="./js/main.js"></script>
 </head>
 <body>
-	<h1>Droom</h1>
+	<div id="loading">
+		<div class="inner">
+			<img src="img/droom-blue.svg" alt="Droom Logotype">
+		</div>
+	</div>
+	<header>
+		<div class="inner flex two">
+			<div class="column">
+				<a href="index.html" class="logo"><img src="img/droom-blue.png" alt="Droom Logotype"></a>
+			</div>
+			<div class="column">
+				<a class="login" href="#"><i class="icon-user-o"></i></a>
+				<button class="hamburger hamburger--spin" type="button" aria-label="Menu" aria-controls="navigation">
+					<span class="hamburger-box">
+						<span class="hamburger-inner"></span>
+					</span>
+				</button>
+				<nav id="navigation">
+					<div class="inner">
+						<ul>
+							<li><a href="index.html"><span>Home</span><span>Home</span></a></li>
+							<li><a href="about.html"><span>About</span><span>About</span></a></li>
+							<li><a href="#"><span>Pricing</span><span>Pricing</span></a></li>
+							<li><a href="#login"><span>Login</span><span>Login</span></a></li>
+							<li>
+								<a href="https://github.com/melquip/droom/tree/melquisedeque-pereira" target="_blank"><i class="icon-github"></i></a>
+								<a href="#" target="_blank"><i class="icon-linkedin"></i></a>
+								<a href="#" target="_blank"><i class="icon-twitter"></i></a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</header>
+	<main>
+		<section class="intro">
+			<div class="inner">
+				<h1 class="animated" data-animate="fadeInDown">Your career dreams <strong>delivered</strong></h1>
+				<p class="animated" data-animate="fadeInDown delay-050s">Droom helps you find your dream job and helps businesses grow and search for the right fit!</p>
+				<a class="button animated" data-animate="fadeInDown delay-050s" href="#features">Learn more</a>
+			</div>
+			<div class="droom">DROOM</div>
+		</section>
+		<section id="features" class="features">
+			<div class="inner">
+				<h2 class="asTitle animated" data-animate="fadeInUp">Find your dream job today!</h2>
+				<div class="flex two">
+					<div class="column">
+						<div class="asInfo animated" data-animate="fadeInUp delay-050s">
+							<p>Droom helps you find your dream job by having one of the easiest and fastest ways to search and filter vacancies that fit your needs!</p>
+							<p>You can track and apply to job applications with ease and organize your job search!</p>
+							<p>You also are guaranteed to receive a response each time you apply!</p>
+						</div>
+					</div>
+					<div class="column">
+						<img src="img/dream-catcher.jpg" alt="Dream Catcher" class="colorize animated" data-animate="fadeInUp">
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="feature1">
+			<div class="inner">
+				<h2 class="asTitle dark animated" data-animate="fadeInUp">Find the employee of your dreams!</h2>
+				<div class="flex two">
+					<div class="column">
+						<img src="img/dream-business.jpg" alt="Dream Business" class="colorize animated" data-animate="fadeInUp">
+					</div>
+					<div class="column">
+						<div class="asInfo dark animated" data-animate="fadeInUp delay-050s">
+							<p>Droom helps you find the right fit for your business with our easy and fast workflow.</p>
+							<p>You can search and filter applicants to match your job requirements and easily find eager candidates!</p>
+							<p>You can also track all the applications and resumes received and organize them however you want for a quick workflow!</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="reviews">
+			<div class="inner">
+				<h2 class="asTitle dark animated" data-animate="fadeInUp">Reviews</h2>
+				<div class="flex three">
+					<div class="column animated" data-animate="fadeInUp delay-025s">
+						<blockquote>
+							With Droom I found the best job I ever had! I'm so glad that a friend told me about this amazing company. I've never been this happy before!
+						</blockquote>
+						<span>by Luis Schekerka</span>
+					</div>
+					<div class="column animated" data-animate="fadeInUp delay-050s">
+						<blockquote>
+							Recruiting has never been easier, thanks to Droom. I was able to find two quality employees!
+						</blockquote>
+						<span>by Oladimeji Lawal-Are</span>
+					</div>
+					<div class="column animated" data-animate="fadeInUp delay-075s">
+						<blockquote>
+							Finally found my dream job thanks to Droom! Try it now!
+						</blockquote>
+						<span>by Melquisedeque Pereira</span>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="tryitnow">
+			<div class="inner flex two" data-animate="fadeInUp">
+				<div class="column">
+					<h2 class="asTitle dark animated" data-animate="fadeInUp">Try <span>Droom</span> now!</h2>
+					<p class="asInfo dark animated" data-animate="fadeInUp">Enter and experience the fulfilment of your career dreams!</p>
+				</div>
+				<div class="column animated" data-animate="fadeInUp">
+					<a href="#login" class="button">Create account</a>
+				</div>
+			</div>
+		</section>
+		<section class="newsletter">
+			<div class="inner">
+				<div class="container">
+					<h2 class="asTitle dark animated" data-animate="fadeInUp">Sign up to our newsletter</h2>
+					<p class="asInfo dark animated" data-animate="fadeInUp">Receive our monthly news and updates!</p>
+					<form action="#newsletter" method="post">
+						<label for="newsletter"></label>
+						<div class="flex submit animated" data-animate="fadeInUp">
+							<input id="newsletter" name="newsletter" type="email" placeholder="Your email here" required>
+							<button type="submit">Submit</button>
+						</div>
+						<div class="forCheckbox animated" data-animate="fadeInUp">
+							<input id="gdpr" name="gdpr" type="checkbox" required>
+							<label class="asIcon" for="gdpr">I agree to the <a href="#">terms of service</a> and consent to Droom sending offers and other info via email.</label>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</section>
+	</main>
+	<footer>
+		<div class="inner flex two">
+			<div class="column">
+				&copy; Copyright 2019 - Melquisedeque Pereira
+			</div>
+			<div class="column">
+				<a href="about.html">About</a>
+				<a href="#">Pricing</a>
+				<a href="#">Support</a>
+				<a href="https://github.com/melquip/droom/tree/melquisedeque-pereira" target="_blank"><i class="icon-github"></i></a>
+				<a href="#" target="_blank"><i class="icon-linkedin"></i></a>
+				<a href="#" target="_blank"><i class="icon-twitter"></i></a>
+			</div>
+		</div>
+	</footer>
 </body>
+
 </html>

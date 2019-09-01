@@ -1,0 +1,573 @@
+@import 'nib'
+@import 'functions.styl'
+@import 'config.styl'
+// plugins
+@import '../css/icons.css'
+@import '../css/animate.min.css'
+@import '../css/hamburger.css'
+
+.inner
+	containers(300, $containers, true)
+
+custom-reset()
+
+.animated
+	visibility hidden
+	&.animdone
+		visibility visible
+	.delay-025s
+		animation-delay .25s
+	.delay-050s
+		animation-delay .05s
+	.delay-075s
+		animation-delay .25s
+
+a
+	color inherit
+
+b, strong
+	f 'bold'
+
+@keyframes loading
+	0%
+		opacity 1
+		visibility visible
+	100%
+		opacity 0
+		visibility hidden
+
+#loading
+	size 100%
+	z-index 1000
+	fixed top 0 left 0
+	background-color $white
+	transition all .2s ease-in-out
+	animation loading .2s linear 1.5s 1 forwards;
+	.inner
+		height 100%
+	img
+		absolute top 50% left 50%
+		transform translate(-50%, -50%)
+
+header, main, footer 
+	max-width 1920px
+	margin 0 auto
+body
+	padding-top 70px
+	
+.logo img
+	height 40px
+	width 100%
+	object-fit contain
+	object-position center
+	+media(360)
+		width auto
+
+header 
+	z-index 100
+	size 100% 70px
+	fixed top 0 left 0
+	background-color $white
+
+	.flex
+		.column
+			&:first-child
+				padding 15px 0
+			&:last-child
+				display flex
+				justify-content flex-end
+
+	.login, .hamburger
+		size 70px
+	.login
+		display block
+		text-align center
+		background-color $blue-dark
+		transition all .33s ease-in-out
+		i:before
+			transition all .33s ease-in-out
+			f 18px 70px $white
+		&:hover
+			background-color $gray
+			i:before
+				color $blue-dark
+	.hamburger
+		padding 0
+		background-color $blue-light
+		transition all .33s ease-in-out
+		&:hover, &.is-active
+			background-color $gray
+			.hamburger-inner
+				&, &:after, &:before
+					background-color $blue-dark 
+		&.is-active + nav
+			opacity 1
+			visibility visible
+
+	.hamburger-box
+		size 20px 14px
+	.hamburger-inner
+		margin-top 0
+		&, &:after, &:before
+			size 20px 2px
+			border-radius 0
+			background-color $white
+		&:before
+			top -6px
+		&:after
+			bottom -6px
+
+nav 
+	z-index 50
+	fixed top 70px left 0
+	size 100% calc(100vh - 70px)
+	background-color $gray
+	transition all .33s ease-in-out
+	opacity 0
+	visibility hidden
+
+	ul
+		padding-top 6.25rem
+		li
+			&:last-child
+				margin-top 23px
+				
+				display flex
+				justify-content center
+				a
+					display initial
+					min-height none
+					padding 0 1em
+					+media(480)
+						padding 0 1.8em
+
+					&:before, &:after
+						content none
+					&:hover
+						color $blue-light
+
+			a
+				display block
+				min-height 2em
+				overflow hidden
+				position relative
+				f 3.375rem, 2em, 'regular2' $blue-dark lowercase
+				transition all .2s ease-in-out
+				&:before, &:after
+					content ''
+					z-index 1
+					size 100% 10px
+					absolute top 50%
+					transform translateY(-5px)
+					transition all .2s ease-in-out
+				&:before
+					left 0
+					background-color $blue-dark
+				&:after
+					left -100%
+					background-color $blue-light
+				span
+					z-index 2
+					padding 0 1em
+					absolute top 0 left 50%
+					transform translateX(-50%)
+					transition all .2s ease-in-out
+					background-color $gray
+					+media(480)
+						padding 0 1.8em
+					&:last-child
+						f $blue-light uppercase
+						top 100%
+
+			&:hover a 
+				&:before
+					left 100%
+				&:after
+					left 0
+				span
+					&:first-child
+						top -100%
+					&:last-child
+						top 0
+
+html 
+	font-size 62.5%
+	+media(480)
+		font-size 70%
+	+media(720)
+		font-size 80%
+	+media(1024)
+		font-size 100%
+		
+section .flex
+	&.two > .column
+		flexible(one)
+		+media(1024)
+			flexible(two)
+	&.three 
+		& > .column
+			flexible(one)
+			+media(720)
+				flexible(two, 20px)
+			+media(1280)
+				flexible(three, 30px)
+
+.intro 
+	z-index 2
+	background linear-gradient(180deg, rgba($blue-light,1) 0%, rgba($blue-dark,1) 100%)
+	.inner
+		min-height calc(100vh - 70px)
+	h1
+		padding-top 1.5em
+		f 3.375rem, 1.2em, .05em $white 'bold'
+		+media(480)
+			padding-top 2.6em
+			line-height 1.4em
+			letter-spacing .1em
+		+media(1024)
+			max-width 80%
+
+		strong
+			f 'regular2'
+	p
+		max-width 400px
+		margin-top 25px
+		f 1.4rem, 1.5em, $white
+		+media(1024)
+			font-size 1rem
+	.button
+		margin 30px auto 0
+
+.button
+	display inline-block
+	background-color $white
+	padding .55em 1.11em .33em
+	f 1.5rem, 2em, $blue-dark uppercase center 'bold'
+	transition all .2s ease-in-out
+	+media(1024)
+		font-size 1.125rem
+	&:hover
+		color $white
+		background-color $blue-dark
+		box-shadow 0 0 10px rgba($black, .3)
+
+.droom
+	width 100%
+	overflow hidden
+	padding-left 2vw
+	opacity .5
+	absolute bottom 0.25em left 50%
+	transform translateX(-50%)
+	f 6.8rem, 1em, 'regular2' lighten($gray, 10%) 0.25em center
+	+media(360)
+		font-size 7rem
+	+media(480)
+		font-size 8rem
+	+media(720)
+		font-size 11.5rem
+	+media(1024)
+		font-size 12.5rem
+
+.features
+	padding top 10rem bottom 4.375rem
+	background $blue-dark
+	+media(720)
+		padding-top 16rem
+	+media(1024)
+		padding-top 18.75rem
+
+	.flex .column:last-child
+		padding-top 2.5rem
+		+media(1024)
+			padding top 15px left 20px
+	img
+		object-fit cover
+		width 100%
+		max-height 400px
+
+.feature1
+	background-color lighten($gray, 10%)
+	.flex .column:first-child
+		padding-bottom 2rem 
+		+media(1024)
+			padding top 15px right 20px bottom 0
+	img
+		object-fit cover
+		width 100%
+		max-height 400px
+
+.reviews
+	.flex > .column
+		position relative
+		background-color $gray
+		padding top 30px bottom 30px right 30px left 40px
+		transition all .2s ease-in-out
+		margin-top 1.875rem
+		+media(720)
+			&:nth-child(2)
+				margin-top 0
+		+media(1280)
+			margin-top 0
+
+		&:first-child
+			margin-top 0
+		&:before 
+			content ''
+			size 10px 100%
+			absolute top 0 left 0
+			background-color $pink
+			transition background-color .2s ease-in-out
+		&:hover
+			background-color lighten($gray, 10%)
+			box-shadow 1px 1px 5px rgba($blue-dark, .5)
+			&:before 
+				background-color darken($pink, 10%)
+			
+	blockquote
+		position relative
+		padding 2.625rem 1rem
+		f 1.5rem, 1.16em, 'bold' $blue-dark center
+		&:before, &:after 
+			f 3rem, 1em, $blue-dark
+			position absolute
+		&:before
+			content '“'
+			top 0 
+			left 0
+		&:after
+			content '”'
+			bottom 0
+			right 0
+			line-height 0
+	span
+		display block
+		padding-top 1.25rem
+		margin-bottom -.3125rem
+		f 0.875rem, 1em, .1em $blue-dark right
+
+.asTitle
+	position relative
+	padding top 2.4375rem left 3.75rem
+	margin-bottom 1.875rem
+	f 2.25rem, 1.25em, 'bold' $white
+	&.dark
+		color $blue-dark
+	&:before
+		content ''
+		size 1.875rem 4.6875rem
+		absolute top 0 left 0
+		background-color $blue-light
+		
+.asInfo
+	position relative
+	padding left 3.75rem right 0.9375rem
+	f 1rem, 1.5em, $white
+	&.dark
+		color $blue-dark
+	&:before
+		content ''
+		size 0.625rem 100%
+		absolute top 0 left 1.25rem
+		background-color $pink
+	p
+		margin-top 0.9375rem
+
+.feature1, .reviews, .tryitnow, .newsletter, .team, .partners
+	padding 3.375rem 0
+	+media(480)
+		padding 4.375rem 0
+
+footer
+	padding 16px 0 14px
+	f 1rem, 24px, $white
+	background-color $blue-light
+	+media(1024)
+		line-height 40px
+
+	.flex.two > .column
+		flexible(one)
+		text-align center
+		+media(1024)
+			flexible(two)
+			text-align left 
+		&:first-child
+			order 2
+			+media(1024)
+				order -1
+		&:last-child
+			order 1
+			+media(1024)
+				text-align right
+
+	a
+		padding 0 1rem
+		&:last-child
+			+media(1024)
+				padding-right 0
+
+.tryitnow
+	background-color lighten($gray, 10%)
+	h2 span
+		f 'regular2' uppercase $blue-light
+	.flex.two
+		align-items center
+		& > .column
+			flexible(one)
+			&:last-child
+				padding top 2rem left 3.75rem
+			+media(720)
+				&:first-child
+					flexible(60%)
+				&:last-child
+					flexible(40%)
+					text-align right
+					padding 0
+			+media(1024)
+				&:first-child
+					flexible(70%)
+				&:last-child
+					flexible(30%)
+					
+	.button
+		font-size 1.1rem
+		+media(1024)
+			font-size 1.3rem
+		+media(1280)
+			font-size 1.5rem
+
+.newsletter
+	.inner
+		text-align center
+	.container
+		margin 0 auto
+		max-width 500px
+	.asTitle, .asInfo
+		&:before
+			content none
+	.asTitle
+		padding-top 0
+		padding-left 0
+		margin-bottom 0
+	.asInfo
+		padding 1.6rem 0
+	input[type="email"]
+		display block
+		width 70%
+		margin 0 auto
+		padding 0 20px
+		background-color $gray
+		border 1px solid transparent
+		border-right 0
+		f 1.25rem, 2.25em, $blue-dark 'regular'
+		transition all .2s ease-in-out
+		&:focus
+			border-color $blue-dark
+			background-color lighten($gray, 10%)
+
+	input[type="checkbox"]
+		display none
+		&:checked + label
+			&:before
+				content '\e805'
+				left 1.5px
+
+	.submit button
+		width 30%
+		cursor pointer
+		border 1px solid transparent
+		background-color $blue-light
+		f 1.25rem, 2.25em, $white 'regular2' lowercase
+		transition background-color .2s ease-in-out
+		&:hover
+			background-color $blue-dark
+
+.forCheckbox
+	label
+		display block
+		cursor pointer
+		position relative
+		padding 20px 30px 0
+		f 1rem, 1.5em, left
+		a
+			color $blue-light
+			&:hover
+				text-decoration underline
+		&:before
+			content '\f096'
+			font-size 1.5rem
+			absolute top 21px left 0
+
+.team
+	background-color $blue-dark
+	.flex > .column
+		position relative
+		background-color $gray
+		margin-top 1.875rem
+		display flex
+		+media(720)
+			display block
+			&:nth-child(2)
+				margin-top 0
+		+media(1280)
+			margin-top 0
+
+		&:first-child
+			margin-top 0
+		img
+			height 77px
+			object-fit cover
+			object-position top center
+			filter grayscale(100%)
+			transition all .2s ease-in-out
+			+media(480)
+				height 87px
+			+media(720)
+				width 100%
+				height auto
+				max-height 300px
+
+		.asInfo
+			padding top 2.25rem bottom 2.25rem
+			width 70%
+			+media(720)
+				width 100%
+			&:before
+				transition all .2s ease-in-out
+		.name
+			f 1.5rem, 1.5em, 'bold'
+		.job
+			f 1rem, 1em
+		&:hover
+			img
+				filter grayscale(0)
+			.asInfo
+				&:before 
+					background-color darken($pink, 10%)
+
+.partners
+	background-color lighten($gray, 10%)
+	img
+		max-height 30px
+		+media(720)
+			max-height 50px
+	.flex
+		flex-direction column
+		justify-content flex-start
+		+media(720)
+			flex-direction row
+			justify-content center
+			align-content center
+			align-items center
+		.column
+			padding 1.5rem
+			padding-left 4rem
+			+media(720)
+				padding-left 1.5rem
+
+.colorize
+	filter grayscale(90%)
+	transition all .2s ease-in-out
+	&:hover
+		filter grayscale(0)
+
+apply_media_cache()

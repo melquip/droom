@@ -1,0 +1,22 @@
+{
+  "name": "Droom",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "concurrently \"npm run launch\" \"npm run watch\"",
+    "launch": "live-server",
+    "watch": "stylus --use nib --include-css --watch stylus/index.styl -o css/main.css",
+    "compile": "stylus --use nib --include-css --compress stylus/index.styl -o css/main.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melquip/droom.git"
+  },
+  "author": "Melquisedeque Pereira",
+  "dependencies": {
+    "concurrently": "^4.1.2",
+    "live-server": "^1.2.1",
+    "nib": "^1.1.2",
+    "stylus": "^0.54.7"
+  }
+}
